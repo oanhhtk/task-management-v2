@@ -1,0 +1,337 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:focus {
+  outline: none;
+}
+
+html {
+  width: auto;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+body {
+  color: #3e4559;
+  font-weight: 400;
+  font-size: 12px;
+  font-family: "HelveticaNeueM";
+  line-height: 16px;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: default;
+}
+// CUSTOM STYLES
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+/* 2. Flex direction */
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-reverse {
+  flex-direction: column-reverse;
+}
+
+/* 3. Flex wrap */
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+/* 4 Flex fow */
+.flex-flow-rowwrap {
+  flex-flow: row wrap;
+}
+
+.flex-flow-rownowrap {
+  flex-flow: row nowrap;
+}
+
+/* 5 Justify content */
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+/* 6 Align Items */
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+.items-baseline {
+  align-items: baseline;
+}
+
+/* 7 Align content */
+.content-start {
+  align-content: flex-start;
+}
+
+.content-end {
+  align-content: flex-end;
+}
+
+.content-center {
+  align-content: center;
+}
+
+.content-between {
+  align-content: space-between;
+}
+
+.content-stretch {
+  align-content: stretch;
+}
+
+.content-around {
+  align-content: space-around;
+}
+
+// Margin
+.m-1 {
+  margin: 0.25em !important;
+}
+
+.m-2 {
+  margin: 0.5em !important;
+}
+
+.m-3 {
+  margin: 0.75em !important;
+}
+
+.m-4 {
+  margin: 1em !important;
+}
+
+.m-5 {
+  margin: 1.25em !important;
+}
+
+.mt-1 {
+  margin-top: 0.25em !important;
+}
+
+.mt-2 {
+  margin-top: 0.5em !important;
+}
+
+.mt-3 {
+  margin-top: 0.75em !important;
+}
+
+.mt-4 {
+  margin-top: 1em !important;
+}
+
+.mt-5 {
+  margin-top: 1.25em !important;
+}
+
+.mr-1 {
+  margin-right: 0.25em !important;
+}
+
+.mr-2 {
+  margin-right: 0.5em !important;
+}
+
+.mr-3 {
+  margin-right: 0.75em !important;
+}
+
+.mr-4 {
+  margin-right: 1em !important;
+}
+
+.mr-5 {
+  margin-right: 1.25em !important;
+}
+
+.ml-1 {
+  margin-left: 0.25em !important;
+}
+
+.ml-2 {
+  margin-left: 0.5em !important;
+}
+
+.ml-3 {
+  margin-left: 0.75em !important;
+}
+
+.ml-4 {
+  margin-left: 1em !important;
+}
+
+.ml-5 {
+  margin-left: 1.25em !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25em !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5em !important;
+}
+
+.mb-3 {
+  margin-bottom: 0.75em !important;
+}
+
+.mb-4 {
+  margin-bottom: 1em !important;
+}
+
+.mb-5 {
+  margin-bottom: 1.25em !important;
+}
+
+// Pading
+.p-1 {
+  padding: 0.25em !important;
+}
+
+.p-2 {
+  padding: 0.5em !important;
+}
+
+.p-3 {
+  padding: 0.75em !important;
+}
+
+.p-4 {
+  padding: 1em !important;
+}
+
+.p-5 {
+  padding: 1.25em !important;
+}
+
+// Grid layout
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-5 {
+  gap: 1.25em;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.box-shadow {
+  -webkit-box-shadow: -4px 0px 37px 9px rgba(46, 46, 53, 0.13);
+  -moz-box-shadow: -4px 0px 37px 9px rgba(46, 46, 53, 0.13);
+  box-shadow: -4px 0px 37px 9px rgba(46, 46, 53, 0.13);
+}
