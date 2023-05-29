@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({});
 
 export default function AuthProvider({ children }: any) {
   const [user, setUser] = useState<any>({});
@@ -13,7 +13,7 @@ export default function AuthProvider({ children }: any) {
   const auth = getAuth();
 
   useEffect(() => {
-    const unsubcribed = auth.onIdTokenChanged((user) => {
+    const unsubcribed = auth.onIdTokenChanged((user: any) => {
       console.log("[From AuthProvider]", { user });
       if (user?.uid) {
         setUser(user);
