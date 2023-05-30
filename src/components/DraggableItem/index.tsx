@@ -1,10 +1,10 @@
-import { Avatar, Divider, Space, Tag, Typography } from 'antd'
-import React from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Avatar, Divider, Space, Tag, Typography } from "antd";
+import React from "react";
+import { Draggable } from "react-beautiful-dnd";
 
 interface DraggableItemProps {
-  item: TaskItemType
-  index: number
+  item: TaskItemType;
+  index: number;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
@@ -18,18 +18,18 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             style={{
-              userSelect: 'none',
-              padding: 16,
-              minHeight: '50px',
-              backgroundColor: '#fff',
-              color: '#000',
+              userSelect: "none",
+              padding: 10,
+              minHeight: "50px",
+              backgroundColor: "#fff",
+              color: "#000",
               borderRadius: 7,
               // border: snapshot.isDragging ? '' : '1px dashed #ddd',
-              boxShadow: '',
+              boxShadow: "",
               ...provided.draggableProps.style,
             }}
           >
-            <Space size={[0, 8]} wrap>
+            <Space size={[0, 4]} wrap>
               <Tag color="magenta">magenta</Tag>
               <Tag color="red">red</Tag>
             </Space>
@@ -38,19 +38,19 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
               <Typography.Text>{item.content}</Typography.Text>
             </Space>
             <>
-              <Divider />
+              <Divider className="mt-2 mb-2" />
               <Avatar
                 style={{
-                  border: '1px solid #ddd',
+                  border: "1px solid #ddd",
                 }}
                 src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1"
               />
             </>
           </div>
-        )
+        );
       }}
     </Draggable>
-  )
-}
+  );
+};
 
-export default DraggableItem
+export default DraggableItem;
