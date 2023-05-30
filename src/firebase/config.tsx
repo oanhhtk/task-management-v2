@@ -1,14 +1,19 @@
 // Import the functions you need from the SDKs you need
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
+import { useParams } from "react-router-dom";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+const currentURL = window.location.href; // returns the absolute URL of a page
+console.log(currentURL);
 const firebaseConfig = {
   apiKey: "AIzaSyCxmaXD1yfUUHv2lK3vlYYj00FxGlTyeVc",
-  authDomain: "oanhhtk-task-management.surge.sh",
+  // authDomain: "oanhhtk-task-management.surge.sh",
+  authDomain: "task-management-v2.vercel.app",
   projectId: "task-management-7de21",
   storageBucket: "task-management-7de21.appspot.com",
   messagingSenderId: "517821099580",
