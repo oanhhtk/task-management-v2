@@ -8,7 +8,7 @@ import { initializeApp } from "firebase/app";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCxmaXD1yfUUHv2lK3vlYYj00FxGlTyeVc",
-  authDomain: "task-management-7de21.firebaseapp.com",
+  authDomain: "oanhhtk-task-management.surge.sh",
   projectId: "task-management-7de21",
   storageBucket: "task-management-7de21.appspot.com",
   messagingSenderId: "517821099580",
