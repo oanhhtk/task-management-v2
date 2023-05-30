@@ -1,10 +1,7 @@
-import React from "react";
-import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-import { useContext } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthProvider";
-import { graphQLRequest } from "../../utils/request";
 import { Button, Typography } from "antd";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { Navigate } from "react-router-dom";
+import { graphQLRequest } from "../../utils/request";
 
 export default function Login() {
   const auth = getAuth();
@@ -39,7 +36,7 @@ export default function Login() {
 
   return (
     <>
-      <Typography.Title>Welcome to Note App</Typography.Title>
+      <Typography.Title>Welcome to Task Management App</Typography.Title>
       <Button type="primary" onClick={handleLoginWithGoogle}>
         Login with Google
       </Button>

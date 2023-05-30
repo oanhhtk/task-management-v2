@@ -140,7 +140,6 @@ function App() {
   const navigate = useNavigate();
 
   const [currentMenu, setCurrentMenu] = useState("All boards");
-  const auth = getAuth();
 
   useEffect(() => {
     (async () => {
@@ -149,40 +148,8 @@ function App() {
     })();
   }, []);
 
-  const handleLoginWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-
-    const {
-      user: { uid, displayName },
-    } = await signInWithPopup(auth, provider);
-
-    console.log(uid);
-
-    const { data } = await graphQLRequest({
-      query: `mutation register($uid: String!, $name: String!) {
-    register(uid: $uid, name: $name) {
-      uid
-      name
-    }
-  }`,
-
-      variables: {
-        uid,
-        name: displayName,
-      },
-    });
-    console.log("register", { data });
-  };
-
   return (
     <div className="w-full">
-      <Button
-        onClick={() => {
-          handleLoginWithGoogle();
-        }}
-      >
-        Login with Google account
-      </Button>
       <Row>
         <Col span={4}>
           <Menu

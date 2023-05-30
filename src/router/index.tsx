@@ -16,32 +16,16 @@ export default createBrowserRouter([
         path: "/login",
       },
       {
-        element: <RapidBoard />,
-        path: `rapid-board/:folderId`,
-      },
-      { element: <App />, path: "/" },
-      {
         element: <ProtectedRoute />,
         children: [
           {
             element: <App />,
             path: "/",
-            children: [
-              {
-                element: <RapidBoard />,
-                path: `rapid-board/:folderId`,
-                // action: addNewNote,
-                // loader: notesLoader,
-                children: [
-                  {
-                    element: <RapidBoard />,
-                    path: `note/:noteId`,
-                    // action: updateNote,
-                    // loader: noteLoader,
-                  },
-                ],
-              },
-            ],
+          },
+          { element: <RapidBoard />, path: `/rapid-board/:folderId` },
+          {
+            element: <RapidBoard />,
+            path: `/note/:noteId`,
           },
         ],
       },

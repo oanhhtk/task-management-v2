@@ -9,7 +9,6 @@ export default function AuthProvider({ children }: any) {
   const [user, setUser] = useState<any>({});
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-
   const auth = getAuth();
 
   useEffect(() => {
@@ -36,12 +35,11 @@ export default function AuthProvider({ children }: any) {
     return () => {
       unsubcribed();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      {isLoading ? <Spin /> : children}
+      {isLoading ? <Spin /> : <>{children}</>}
     </AuthContext.Provider>
   );
 }
