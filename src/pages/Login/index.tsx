@@ -1,4 +1,5 @@
-import { Button, Typography } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 import { graphQLRequest } from "../../utils/request";
@@ -35,11 +36,86 @@ export default function Login() {
   }
 
   return (
-    <div className="text-center">
-      <Typography.Title>Welcome to Task Management App</Typography.Title>
-      <Button type="primary" onClick={handleLoginWithGoogle}>
-        Login with Google
-      </Button>
-    </div>
+    // <div className="flex justify-center items-center text-center">
+    //   <div>
+    //     <Typography.Title>Welcome to Task Management App</Typography.Title>
+    //     <Button
+    //       type="primary"
+    //       className="text-center"
+    //       onClick={handleLoginWithGoogle}
+    //     >
+    //       Login with Google
+    //     </Button>
+    //   </div>
+    // </div>
+    <>
+      <Typography.Title
+        style={{
+          textAlign: "center",
+          padding: "10px 0",
+        }}
+        className="text-center"
+      >
+        Task Management
+      </Typography.Title>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onFinish={handleLoginWithGoogle}
+          style={{
+            width: "20%",
+          }}
+        >
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+              value="oanh"
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+              value="12345"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            <a className="login-form-forgot" href="">
+              Forgot password
+            </a>
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              Log in
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 }
