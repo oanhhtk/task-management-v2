@@ -1,13 +1,11 @@
 import DraggableItem from "../DraggableItem";
 
 interface DraggableListProps {
-  list: {
-    _id: string;
-    content: TaskItemType;
-  }[];
+  list: any[];
 }
 
 const DraggableList: React.FC<DraggableListProps> = ({ list }) => {
+  console.log("list :>> ", list);
   return (
     <>
       {list?.length > 0 &&
