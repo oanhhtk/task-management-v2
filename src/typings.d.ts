@@ -1,10 +1,12 @@
 type TaskItemType = {
-  id: string
-  label: string
-  content: string
-}
+  id: string;
+  _id: string;
+  name: string;
+  status: string;
+  descriptions: string;
+};
 
 type DroppableColumnsType = {
-  name: string
-  items: TaskItemType[]
-}
+  name: string;
+  items: TaskItemType[];
+};

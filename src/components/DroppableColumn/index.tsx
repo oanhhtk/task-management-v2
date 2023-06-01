@@ -22,6 +22,8 @@ export default function DroppableColumns({
       style={{
         width: "25%",
         margin: 6,
+        height: "100%",
+        minHeight: "700px",
       }}
     >
       <div
@@ -30,6 +32,7 @@ export default function DroppableColumns({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          height: "100%",
         }}
       >
         <Space
@@ -42,55 +45,60 @@ export default function DroppableColumns({
             {columnName}
           </Typography.Title>
           <Badge
-            color={COLUMS_TASK_LIST_ENUM[columnKey].color}
-            count={columnData.items.length}
+            color={COLUMS_TASK_LIST_ENUM[columnKey]?.color}
+            count={columnData?.items?.length}
           />
         </Space>
 
-        <div className="w-full">
-          {columnKey === "TODO" ? (
-            <Button
-              onClick={() => {
-                console.log("TODO");
-                handleAddNewToDo();
+        <div className="w-full h-full">
+          <div className="h-full">
+            {columnKey === "TODO" ? (
+              <Button
+                onClick={() => {
+                  console.log("TODO");
+                  handleAddNewToDo();
+                }}
+                icon={<PlusOutlined />}
+                style={{
+                  padding: 16,
+                  margin: "0 0 8px 0",
+                  minHeight: "50px",
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  borderRadius: 7,
+                  border: "1px solid #ddd",
+                  width: "100%",
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="h-full">
+            <Droppable droppableId={columnKey} key={columnKey}>
+              {(provided, snapshot) => {
+                return (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{
+                      background: snapshot.isDraggingOver ? "#ddd" : "#f1f1f1",
+                      border: !snapshot.isDraggingOver ? "" : "1px dashed blue",
+                      padding: 4,
+                      width: "100%",
+                      minHeight: "1000px",
+                      borderColor: "#ddd",
+                      height: "100%",
+                    }}
+                    key={columnKey}
+                  >
+                    <DraggableList list={columnData?.items} />
+                    {provided.placeholder}
+                  </div>
+                );
               }}
-              icon={<PlusOutlined />}
-              style={{
-                padding: 16,
-                margin: "0 0 8px 0",
-                minHeight: "50px",
-                backgroundColor: "#fff",
-                color: "#000",
-                borderRadius: 7,
-                border: "1px solid #ddd",
-                width: "100%",
-              }}
-            />
-          ) : (
-            ""
-          )}
-
-          <Droppable droppableId={columnKey} key={columnKey}>
-            {(provided, snapshot) => {
-              return (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{
-                    background: snapshot.isDraggingOver ? "#ddd" : "#f1f1f1",
-                    border: !snapshot.isDraggingOver ? "" : "1px dashed blue",
-                    padding: 4,
-                    width: "100%",
-                    minHeight: 500,
-                    borderColor: "#ddd",
-                  }}
-                >
-                  <DraggableList list={columnData.items} />
-                  {provided.placeholder}
-                </div>
-              );
-            }}
-          </Droppable>
+            </Droppable>
+          </div>
         </div>
       </div>
     </div>

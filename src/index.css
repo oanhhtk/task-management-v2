@@ -335,3 +335,13 @@ body {
   -moz-box-shadow: -4px 0px 37px 9px rgba(46, 46, 53, 0.13);
   box-shadow: -4px 0px 37px 9px rgba(46, 46, 53, 0.13);
 }
+
+.ant-layout-sider {
+  background: #fff !important;
+}
+
+.logo {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+}

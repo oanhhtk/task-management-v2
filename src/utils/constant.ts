@@ -26,5 +26,6 @@ export const COLUMS_TASK_LIST_ENUM: Record<string, any> = {
   },
 };
 
-export const GRAPHQL_SERVER =
-  "https://oanhhtk-task-management-server.onrender.com";
+// export const GRAPHQL_SERVER =
+//   "https://oanhhtk-task-management-server.onrender.com";
+export const GRAPHQL_SERVER_DEV = "http://localhost:4000";

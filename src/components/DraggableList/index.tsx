@@ -1,18 +1,21 @@
-import { Draggable } from 'react-beautiful-dnd'
-import DraggableItem from '../DraggableItem'
+import DraggableItem from "../DraggableItem";
 
 interface DraggableListProps {
-  list: TaskItemType[]
+  list: any[];
 }
 
 const DraggableList: React.FC<DraggableListProps> = ({ list }) => {
+  console.log("list :>> ", list);
   return (
     <>
-      {list.map((item, index) => {
-        return <DraggableItem key={item.id} item={item} index={index} />
-      })}
+      {list?.length > 0 &&
+        list?.map((item, index) => {
+          return (
+            <DraggableItem key={item?._id} item={item?.content} index={index} />
+          );
+        })}
     </>
-  )
-}
+  );
+};
 
-export default DraggableList
+export default DraggableList;
