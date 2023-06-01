@@ -35,11 +35,11 @@ export default function Login() {
   }
 
   return (
-    <>
+    <div className="text-center">
       <Typography.Title>Welcome to Task Management App</Typography.Title>
       <Button type="primary" onClick={handleLoginWithGoogle}>
         Login with Google
       </Button>
-    </>
+    </div>
   );
 }

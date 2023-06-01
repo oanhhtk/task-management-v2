@@ -13,6 +13,7 @@ export default function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubcribed = auth.onIdTokenChanged((user: any) => {
+      // return new user data
       console.log("[From AuthProvider]", { user });
       if (user?.uid) {
         setUser(user);
@@ -39,7 +40,7 @@ export default function AuthProvider({ children }: any) {
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      {isLoading ? <Spin /> : <>{children}</>}
+      {isLoading ? <Spin className="text-center" /> : <>{children}</>}
     </AuthContext.Provider>
   );
 }

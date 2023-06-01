@@ -8,8 +8,9 @@ interface DraggableItemProps {
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
+  if (!item) return <></>;
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index}>
+    <Draggable key={item?.id} draggableId={item?._id} index={index}>
       {(provided, snapshot) => {
         return (
           <div
@@ -34,8 +35,8 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
               <Tag color="red">red</Tag>
             </Space>
             <Space direction="vertical">
-              <Typography.Title level={5}>{item.label}</Typography.Title>
-              <Typography.Text>{item.content}</Typography.Text>
+              <Typography.Title level={5}>{item?.name}</Typography.Title>
+              <Typography.Text>{item?.descriptions}</Typography.Text>
             </Space>
             <>
               <Divider className="mt-2 mb-2" />

@@ -1,69 +1,62 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Spin, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { useParams } from "react-router-dom";
 import DroppableColumns from "../../components/DroppableColumn";
 import TaskDetail from "../../components/TaskDetail";
-
-const tasks = [
-  {
-    id: "1",
-    label: "Task label",
-    content: "First task Data disk type: MongoDB ",
-  },
-  {
-    id: "2",
-    label: "Task label",
-    content: "Second task Data disk type: MongoDB",
-  },
-  {
-    id: "3",
-    label: "Task label",
-    content: "Third task Data disk type: MongoDB",
-  },
-  {
-    id: "4",
-    label: "Task label",
-    content: "Fourth task Data disk type: MongoDB",
-  },
-  {
-    id: "5",
-    label: "Task label",
-    content: "Fifth task Data disk type: MongoDB",
-  },
-];
-
-const taskStatus: Record<string, DroppableColumnsType> = {
-  TODO: {
-    name: "To do",
-    items: tasks,
-  },
-  INPROGRESS: {
-    name: "In Progress",
-    items: [],
-  },
-  RESOLVED: {
-    name: "Resolved",
-    items: [],
-  },
-  DONE: {
-    name: "Done",
-    items: [],
-  },
-};
+import { BoardsLoader } from "../../service";
 
 function RapidBoard() {
-  console.log("RapidBoard");
+  const { folderId } = useParams();
   const [columns, setColumns] =
-    useState<Record<string, DroppableColumnsType>>(taskStatus);
+    useState<Record<string, DroppableColumnsType>>();
+
+  useEffect(() => {
+    (async () => {
+      if (!folderId) return;
+      const res = await BoardsLoader(folderId);
+      console.log(res);
+      const result: any = {};
+      Object.entries(res?.board?.tasks).map(([key, value]) => {
+        result[key] = {
+          name: key,
+          items: value,
+        };
+      });
+      setColumns(result);
+
+      //   TODO: {
+      //     name: "To do",
+      //     items: res?.board?.folders?.map((fd: any) => {
+      //       if (
+      //         fd?.content &&
+      //         typeof fd?.content !== "string" &&
+      //         Object.keys(fd?.content).length > 0
+      //       ) {
+      //         return fd?.content;
+      //       }
+      //     }),
+      //   },
+      //   INPROGRESS: {
+      //     name: "Inprogress",
+      //     items: [],
+      //   },
+      //   DONE: {
+      //     name: "Done",
+      //     items: [],
+      //   },
+      // });
+    })();
+  }, [folderId]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
+    const sourceColumn = columns?.[source.droppableId];
+    const destColumn = columns?.[destination.droppableId];
     //
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
+    const sourceItems = [...(sourceColumn?.items || [])];
+    const destItems = [...(destColumn?.items || [])];
 
     if (source.droppableId !== destination.droppableId) {
       //handle move to
@@ -72,7 +65,7 @@ function RapidBoard() {
       // Inserts in destination items
       destItems.splice(destination.index, 0, itemRemoved);
       // update columns data
-      setColumns((prevColumns) => ({
+      setColumns((prevColumns: any) => ({
         ...prevColumns,
         [source.droppableId]: {
           ...sourceColumn,
@@ -87,7 +80,7 @@ function RapidBoard() {
       //handle re-order
       const [itemRemoved] = sourceItems.splice(source.index, 1);
       sourceItems.splice(destination.index, 0, itemRemoved);
-      setColumns((prevColumns) => ({
+      setColumns((prevColumns: any) => ({
         ...prevColumns,
         [source.droppableId]: {
           ...sourceColumn,
@@ -96,9 +89,8 @@ function RapidBoard() {
       }));
     }
   };
-  useEffect(() => {
-    setColumns(taskStatus);
-  }, []);
+
+  console.log("columns :>> ", columns);
   return (
     <div
       style={{
@@ -130,35 +122,47 @@ function RapidBoard() {
               overflow: "scroll",
             }}
           >
-            <div className="flex justify-center h-full">
-              <DragDropContext onDragEnd={onDragEnd}>
-                {Object.entries(columns).map(([columnKey, column]) => {
-                  return (
-                    <DroppableColumns
-                      key={columnKey}
-                      columnKey={columnKey}
-                      columnData={column}
-                      columnName={column.name}
-                      handleAddNewToDo={() => {
-                        setColumns((prev) => ({
-                          ...prev,
-                          ["TODO"]: {
-                            ...prev["TODO"],
-                            items: [
-                              {
-                                id: `${column.items.length + 1}`,
-                                label: "string",
-                                content: "string",
-                              },
-                              ...prev["TODO"].items,
-                            ],
-                          },
-                        }));
-                      }}
-                    />
-                  );
-                })}
-              </DragDropContext>
+            <div className="flex justify-around h-full">
+              {columns ? (
+                <DragDropContext onDragEnd={onDragEnd}>
+                  {Object.entries(columns).map(([columnKey, column]) => {
+                    console.log(columnKey);
+                    return (
+                      <DroppableColumns
+                        key={columnKey}
+                        columnKey={columnKey}
+                        columnData={column}
+                        columnName={column.name}
+                        handleAddNewToDo={() => {
+                          setColumns(
+                            (prev) =>
+                              prev && {
+                                ...prev,
+                                ["TODO"]: {
+                                  ...prev["TODO"],
+                                  items: [
+                                    {
+                                      _id: `${column?.items.length + 1}`,
+                                      id: `${column?.items.length + 1}`,
+                                      name: "string",
+                                      descriptions: "This is descriptions",
+                                      status: "TODO",
+                                    },
+                                    ...prev["TODO"]?.items,
+                                  ],
+                                },
+                              }
+                          );
+                        }}
+                      />
+                    );
+                  })}
+                </DragDropContext>
+              ) : (
+                <div className="text-center">
+                  <Spin />
+                </div>
+              )}
             </div>
           </div>
         </Col>
