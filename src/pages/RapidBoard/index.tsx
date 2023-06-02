@@ -1,53 +1,61 @@
-import { Col, Row, Spin, Typography } from "antd";
+import { Form, Spin, Typography, notification } from "antd";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useParams } from "react-router-dom";
 import DroppableColumns from "../../components/DroppableColumn";
-import TaskDetail from "../../components/TaskDetail";
-import { BoardsLoader } from "../../service";
+import { BoardsLoader, addTask } from "../../service";
+import TaskDetail from "./components/TaskDetail";
+import UseForm from "./components/UseForm";
+import BoardProvier from "../../context/BoardContext";
+import Loading from "../../components/Loading";
+
+const orderSortArr = ["TODO", "INPROGRESS", "RESOLVED", "DONE", "RELEASED"];
 
 function RapidBoard() {
   const { folderId } = useParams();
   const [columns, setColumns] =
     useState<Record<string, DroppableColumnsType>>();
+  const [form] = Form.useForm();
+  const [projectName, setProjectName] = useState("");
 
-  useEffect(() => {
-    (async () => {
-      if (!folderId) return;
+  const [taskDetail, setTaskDetail] = useState<any>();
+  const [openUseForm, setOpenUseForm] = useState(false);
+  const [formSubmiting, setFormSubmiting] = useState(false);
+  const [triggerReload, setTriggerReload] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const getBoards = async () => {
+    if (!folderId) return;
+    try {
+      setLoading(true);
       const res = await BoardsLoader(folderId);
-      console.log(res);
+      const data: any = {};
       const result: any = {};
+      setProjectName(res?.board?.name);
       Object.entries(res?.board?.tasks).map(([key, value]) => {
-        result[key] = {
+        data[key] = {
           name: key,
           items: value,
         };
       });
+      orderSortArr.map((key) => {
+        result[key] = data[key];
+      });
       setColumns(result);
+    } catch (error) {
+      notification.error({
+        type: "error",
+        message: "Error!",
+        description: "Failed to fetch board data. Try again!",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      //   TODO: {
-      //     name: "To do",
-      //     items: res?.board?.folders?.map((fd: any) => {
-      //       if (
-      //         fd?.content &&
-      //         typeof fd?.content !== "string" &&
-      //         Object.keys(fd?.content).length > 0
-      //       ) {
-      //         return fd?.content;
-      //       }
-      //     }),
-      //   },
-      //   INPROGRESS: {
-      //     name: "Inprogress",
-      //     items: [],
-      //   },
-      //   DONE: {
-      //     name: "Done",
-      //     items: [],
-      //   },
-      // });
-    })();
-  }, [folderId]);
+  useEffect(() => {
+    getBoards();
+  }, [folderId, triggerReload]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -90,96 +98,134 @@ function RapidBoard() {
     }
   };
 
-  console.log("columns :>> ", columns);
+  const onFromSubmit = async (value: any) => {
+    value.status = "TODO";
+    if (!folderId) return;
+    try {
+      setFormSubmiting(true);
+      await addTask(folderId, value);
+      notification.success({
+        type: "success",
+        message: "Successfully",
+        description: "Add new task successfully",
+      });
+      setTriggerReload(true);
+    } catch (error) {
+      notification.success({
+        type: "error",
+        message: "Failed to add new task",
+        description: "Add new task failed!. Try again",
+      });
+    } finally {
+      setFormSubmiting(false);
+      setOpenUseForm(false);
+    }
+  };
+
   return (
-    <div
-      style={{
-        maxHeight: "100vh",
-        padding: "10px",
-        overflow: "hidden",
-      }}
-    >
-      <Typography.Text
-        className="text-center"
+    <BoardProvier>
+      <div
         style={{
-          marginTop: "30px",
+          maxHeight: "100vh",
+          padding: "10px",
+          overflow: "hidden",
         }}
       >
-        ECOPAY Sprint 20
-      </Typography.Text>
-      <Row justify="space-between">
-        <Col
-          span={16}
+        <Typography.Text
+          className="text-center logo"
           style={{
-            minWidth: "700px",
-            height: "100%",
-            overflow: "scroll",
+            marginTop: "30px",
           }}
         >
+          {projectName}
+        </Typography.Text>
+        <div className="flex">
+          <Loading loading={loading} />
+
           <div
             style={{
-              maxHeight: "100vh",
+              width: "100%",
+              height: "100%",
               overflow: "scroll",
             }}
           >
-            <div className="flex justify-around h-full">
-              {columns ? (
-                <DragDropContext onDragEnd={onDragEnd}>
-                  {Object.entries(columns).map(([columnKey, column]) => {
-                    console.log(columnKey);
-                    return (
-                      <DroppableColumns
-                        key={columnKey}
-                        columnKey={columnKey}
-                        columnData={column}
-                        columnName={column.name}
-                        handleAddNewToDo={() => {
-                          setColumns(
-                            (prev) =>
-                              prev && {
-                                ...prev,
-                                ["TODO"]: {
-                                  ...prev["TODO"],
-                                  items: [
-                                    {
-                                      _id: `${column?.items.length + 1}`,
-                                      id: `${column?.items.length + 1}`,
-                                      name: "string",
-                                      descriptions: "This is descriptions",
-                                      status: "TODO",
-                                    },
-                                    ...prev["TODO"]?.items,
-                                  ],
-                                },
-                              }
-                          );
-                        }}
-                      />
-                    );
-                  })}
-                </DragDropContext>
-              ) : (
-                <div className="text-center">
-                  <Spin />
-                </div>
-              )}
+            <div
+              style={{
+                maxHeight: "100vh",
+                minHeight: "100vh",
+                overflow: "scroll",
+              }}
+            >
+              <div
+                className="flex h-full"
+                style={{
+                  width: "1240px",
+                  minWidth: "100%",
+                }}
+              >
+                {columns ? (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    {Object.entries(columns).map(([columnKey, column]) => {
+                      return (
+                        <DroppableColumns
+                          key={columnKey}
+                          columnKey={columnKey}
+                          columnData={column}
+                          columnName={column.name}
+                          handleAddNewToDo={() => {
+                            setOpenUseForm(true);
+                            // setColumns(
+                            //   (prev) =>
+                            //     prev && {
+                            //       ...prev,
+                            //       ["TODO"]: {
+                            //         ...prev["TODO"],
+                            //         items: [
+                            //           {
+                            //             _id: `${column?.items.length + 1}`,
+                            //             id: `${column?.items.length + 1}`,
+                            //             name: "string",
+                            //             descriptions: "This is descriptions",
+                            //             status: "TODO",
+                            //           },
+                            //           ...prev["TODO"]?.items,
+                            //         ],
+                            //       },
+                            //     }
+                            // );
+                          }}
+                          onItemClick={(item) => {
+                            setTaskDetail(item);
+                          }}
+                        />
+                      );
+                    })}
+                  </DragDropContext>
+                ) : (
+                  <Loading loading />
+                )}
+              </div>
             </div>
           </div>
-        </Col>
-        <Col
-          span={8}
-          style={{
-            padding: "8px",
-            height: "100%",
-            maxHeight: "100vh",
-            overflow: "scroll",
-          }}
-        >
-          <h4>Detail</h4>
-          <TaskDetail />
-        </Col>
-      </Row>
-    </div>
+          <div>
+            <TaskDetail data={taskDetail} />
+          </div>
+        </div>
+
+        {openUseForm ? (
+          <UseForm
+            open={openUseForm}
+            onCancel={() => setOpenUseForm(false)}
+            projectName={projectName}
+            form={form}
+            onSubmit={onFromSubmit}
+            formProps={{
+              isSubmiting: formSubmiting,
+            }}
+          />
+        ) : null}
+      </div>
+    </BoardProvier>
   );
 }
 

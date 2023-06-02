@@ -17,6 +17,7 @@ import "../../firebase/config";
 import { theme } from "antd";
 import { useParams } from "react-router-dom";
 import { getBoardList } from "../../service";
+import Loading from "../../components/Loading";
 
 interface BoardItemDataType {
   id: any;
@@ -68,21 +69,6 @@ const columns: ColumnsType<BoardItemDataType> = [
   },
 ];
 
-const MENU_LIST = [
-  {
-    key: "all-board",
-    value: "all-board",
-    label: "All boards",
-    title: "All boards",
-  },
-  {
-    key: "recently-visited",
-    label: "Recently visited boards",
-    title: "Recently visited boards",
-    value: "recently-visited",
-  },
-];
-
 const boardTypeList = [
   {
     label: "Crum",
@@ -90,20 +76,9 @@ const boardTypeList = [
   },
 ];
 
-const MENU_LIST_ENUM: Record<string, any> = {
-  "all-board": {
-    text: "All boards",
-    value: "all-board",
-  },
-  "recently-visited": {
-    text: "Recently visited boards",
-    value: "recently-visited",
-  },
-};
-
 function Home() {
   const navigate = useNavigate();
-  const [currentMenu, setCurrentMenu] = useState("All boards");
+  const [currentMenu] = useState("All boards");
   const [boardList, setBoarList] = useState<any>();
 
   useEffect(() => {
@@ -135,7 +110,7 @@ function Home() {
           })}
         />
       ) : (
-        <Spin spinning />
+        <Loading loading />
       )}
     </div>
   );

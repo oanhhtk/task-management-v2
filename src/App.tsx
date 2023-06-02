@@ -2,8 +2,8 @@ import {
   AppstoreOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
+  ControlOutlined,
+  ApartmentOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import React, { useState } from "react";
@@ -17,21 +17,14 @@ const MENU_LIST = [
     value: "all-board",
     label: "All boards",
     title: "All boards",
-    icon: <UserOutlined />,
+    icon: <ApartmentOutlined />,
   },
   {
     key: "recently-visited",
     label: "Recently visited boards",
     title: "Recently visited boards",
     value: "recently-visited",
-    icon: <UploadOutlined />,
-  },
-];
-
-const boardTypeList = [
-  {
-    label: "Crum",
-    value: "crrum",
+    icon: <ControlOutlined />,
   },
 ];
 
@@ -59,10 +52,14 @@ const App: React.FC = () => {
         <div className="logo mt-2 mb-2">
           {collapsed ? (
             <div>
-              <AppstoreOutlined width={100} height={100} />
+              <AppstoreOutlined
+                style={{
+                  fontSize: "20px",
+                }}
+              />
             </div>
           ) : (
-            "   Task Management"
+            "Task Management"
           )}
         </div>
 

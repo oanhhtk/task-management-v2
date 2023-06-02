@@ -1,17 +1,25 @@
+import { useState } from "react";
 import DraggableItem from "../DraggableItem";
 
 interface DraggableListProps {
   list: any[];
+  onItemClick: (item: any) => void;
 }
 
-const DraggableList: React.FC<DraggableListProps> = ({ list }) => {
-  console.log("list :>> ", list);
+const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {
   return (
     <>
       {list?.length > 0 &&
         list?.map((item, index) => {
           return (
-            <DraggableItem key={item?._id} item={item?.content} index={index} />
+            <DraggableItem
+              key={item?.id}
+              item={item?.content}
+              index={index}
+              onClick={() => {
+                onItemClick(item);
+              }}
+            />
           );
         })}
     </>

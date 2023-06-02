@@ -3,6 +3,8 @@ type TaskItemType = {
   _id: string;
   name: string;
   status: string;
+  issue_type: string;
+  priority: string;
   descriptions: string;
 };
 

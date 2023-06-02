@@ -13,6 +13,7 @@ export const foldersLoader = async () => {
   return data;
   1;
 };
+
 export const getBoardList = async () => {
   const query = `query Boards {
     boards {
@@ -35,36 +36,74 @@ export const getBoardList = async () => {
 export const BoardsLoader = async (folderId: string) => {
   const query = `query Query($folderId: String!) {
     board(folderId: $folderId) {
+      name
+      id
+      createdAt
       tasks {
-        TODO {
-          updatedAt
+        DONE {
           id
+          createdAt
+          updatedAt
           content {
-            status
+            _id
             name
             descriptions
-            _id
+            status
+            issue_type
+            priority
           }
         }
         INPROGRESS {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name
             descriptions
             status
+            issue_type
+            priority
           }
-          updatedAt
         }
-        DONE {
+        RELEASED {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name
             descriptions
             status
+            issue_type
+            priority
           }
+        }
+        RESOLVED {
+          id
+          createdAt
           updatedAt
+          content {
+            _id
+            name
+            descriptions
+            status
+            issue_type
+            priority
+          }
+        }
+        TODO {
+          id
+          createdAt
+          updatedAt
+          content {
+            _id
+            name
+            descriptions
+            status
+            issue_type
+            priority
+          }
         }
       }
     }
@@ -76,4 +115,30 @@ export const BoardsLoader = async (folderId: string) => {
 
   const data = await graphQLRequest({ query, variables });
   return data;
+};
+
+export const addTask = async (folderId: string, content: any) => {
+  const query = `mutation Mutation($folderId: ID!, $content: TaskContentInput) {
+    addTask(folderId: $folderId, content: $content) {
+      content {
+        _id
+        name
+        descriptions
+        status
+        issue_type
+        priority
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }`;
+
+  const variables = {
+    folderId,
+    content,
+  };
+  const data = await graphQLRequest({ query, variables });
+  return data;
+  1;
 };
