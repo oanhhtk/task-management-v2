@@ -1,3 +1,4 @@
+import { useState } from "react";
 import DraggableItem from "../DraggableItem";
 
 interface DraggableListProps {
@@ -6,7 +7,6 @@ interface DraggableListProps {
 }
 
 const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {
-  console.log("list :>> ", list);
   return (
     <>
       {list?.length > 0 &&
@@ -16,7 +16,10 @@ const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {
               key={item?.id}
               item={item?.content}
               index={index}
-              onClick={onItemClick}
+              onClick={() => {
+                console.log("object :>> ", item?.content?._id);
+                onItemClick(item);
+              }}
             />
           );
         })}

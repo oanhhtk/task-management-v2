@@ -1,11 +1,12 @@
-import { Form, Spin, Typography } from "antd";
+import { Form, Spin, Typography, notification } from "antd";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useParams } from "react-router-dom";
 import DroppableColumns from "../../components/DroppableColumn";
-import { BoardsLoader } from "../../service";
+import { BoardsLoader, addTask } from "../../service";
 import TaskDetail from "./components/TaskDetail";
 import UseForm from "./components/UseForm";
+import BoardProvier from "../../context/BoardContext";
 
 const orderSortArr = ["TODO", "INPROGRESS", "RESOLVED", "DONE", "RELEASED"];
 
@@ -24,7 +25,6 @@ function RapidBoard() {
     (async () => {
       if (!folderId) return;
       const res = await BoardsLoader(folderId);
-      console.log(res);
       const data: any = {};
       const result: any = {};
       setProjectName(res?.board?.name);
@@ -41,7 +41,6 @@ function RapidBoard() {
     })();
   }, [folderId]);
 
-  console.log("columns :>> ", columns);
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -84,119 +83,132 @@ function RapidBoard() {
   };
 
   const onFromSubmit = async (value: any) => {
-    console.log(value);
+    value.status = "TODO";
+    if (!folderId) return;
     try {
       setFormSubmiting(true);
-      setTimeout(() => {
-        setFormSubmiting(false);
-        setOpenUseForm(false);
-      }, 5000);
-    } catch (error) {}
+      await addTask(folderId, value);
+      notification.success({
+        type: "success",
+        message: "Successfully",
+        description: "Add new task successfully",
+      });
+    } catch (error) {
+      notification.success({
+        type: "error",
+        message: "Failed to add new task",
+        description: "Add new task failed!. Try again",
+      });
+    } finally {
+      setFormSubmiting(false);
+      setOpenUseForm(false);
+    }
   };
 
   return (
-    <div
-      style={{
-        maxHeight: "100vh",
-        padding: "10px",
-        overflow: "hidden",
-      }}
-    >
-      <Typography.Text
-        className="text-center logo"
+    <BoardProvier>
+      <div
         style={{
-          marginTop: "30px",
+          maxHeight: "100vh",
+          padding: "10px",
+          overflow: "hidden",
         }}
       >
-        {projectName}
-      </Typography.Text>
-      <div className="flex">
-        <div
+        <Typography.Text
+          className="text-center logo"
           style={{
-            width: "100%",
-            height: "100%",
-            overflow: "scroll",
+            marginTop: "30px",
           }}
         >
+          {projectName}
+        </Typography.Text>
+        <div className="flex">
           <div
             style={{
-              maxHeight: "100vh",
-              minHeight: "100vh",
+              width: "100%",
+              height: "100%",
               overflow: "scroll",
             }}
           >
             <div
-              className="flex h-full"
               style={{
-                width: "1240px",
-                minWidth: "100%",
+                maxHeight: "100vh",
+                minHeight: "100vh",
+                overflow: "scroll",
               }}
             >
-              {columns ? (
-                <DragDropContext onDragEnd={onDragEnd}>
-                  {Object.entries(columns).map(([columnKey, column]) => {
-                    return (
-                      <DroppableColumns
-                        key={columnKey}
-                        columnKey={columnKey}
-                        columnData={column}
-                        columnName={column.name}
-                        handleAddNewToDo={() => {
-                          setOpenUseForm(true);
-                          // setColumns(
-                          //   (prev) =>
-                          //     prev && {
-                          //       ...prev,
-                          //       ["TODO"]: {
-                          //         ...prev["TODO"],
-                          //         items: [
-                          //           {
-                          //             _id: `${column?.items.length + 1}`,
-                          //             id: `${column?.items.length + 1}`,
-                          //             name: "string",
-                          //             descriptions: "This is descriptions",
-                          //             status: "TODO",
-                          //           },
-                          //           ...prev["TODO"]?.items,
-                          //         ],
-                          //       },
-                          //     }
-                          // );
-                        }}
-                        onItemClick={(item) => {
-                          console.log(item);
-                          setTaskDetail(item);
-                        }}
-                      />
-                    );
-                  })}
-                </DragDropContext>
-              ) : (
-                <div className="flex justify-center items-center">
-                  <Spin />
-                </div>
-              )}
+              <div
+                className="flex h-full"
+                style={{
+                  width: "1240px",
+                  minWidth: "100%",
+                }}
+              >
+                {columns ? (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    {Object.entries(columns).map(([columnKey, column]) => {
+                      return (
+                        <DroppableColumns
+                          key={columnKey}
+                          columnKey={columnKey}
+                          columnData={column}
+                          columnName={column.name}
+                          handleAddNewToDo={() => {
+                            setOpenUseForm(true);
+                            // setColumns(
+                            //   (prev) =>
+                            //     prev && {
+                            //       ...prev,
+                            //       ["TODO"]: {
+                            //         ...prev["TODO"],
+                            //         items: [
+                            //           {
+                            //             _id: `${column?.items.length + 1}`,
+                            //             id: `${column?.items.length + 1}`,
+                            //             name: "string",
+                            //             descriptions: "This is descriptions",
+                            //             status: "TODO",
+                            //           },
+                            //           ...prev["TODO"]?.items,
+                            //         ],
+                            //       },
+                            //     }
+                            // );
+                          }}
+                          onItemClick={(item) => {
+                            setTaskDetail(item);
+                          }}
+                        />
+                      );
+                    })}
+                  </DragDropContext>
+                ) : (
+                  <div className="flex justify-center items-center">
+                    <Spin />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+          <div>
+            <TaskDetail data={taskDetail} />
+          </div>
         </div>
-        <div>
-          <TaskDetail data={taskDetail} />
-        </div>
-      </div>
 
-      {openUseForm ? (
-        <UseForm
-          open={openUseForm}
-          onCancel={() => setOpenUseForm(false)}
-          projectName={projectName}
-          form={form}
-          onSubmit={onFromSubmit}
-          formProps={{
-            isSubmiting: formSubmiting,
-          }}
-        />
-      ) : null}
-    </div>
+        {openUseForm ? (
+          <UseForm
+            open={openUseForm}
+            onCancel={() => setOpenUseForm(false)}
+            projectName={projectName}
+            form={form}
+            onSubmit={onFromSubmit}
+            formProps={{
+              isSubmiting: formSubmiting,
+            }}
+          />
+        ) : null}
+      </div>
+    </BoardProvier>
   );
 }
 

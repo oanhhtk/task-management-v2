@@ -393,3 +393,10 @@ body {
   text-align: center;
   width: fit-content;
 }
+
+.task-draggable-item {
+  transition: all 0.25s linear;
+}
+.task-draggable-item:hover {
+  background: rgb(241, 241, 241) !important;
+}

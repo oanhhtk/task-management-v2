@@ -8,7 +8,6 @@ import { initializeApp } from "firebase/app";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const currentURL = window.location.href; // returns the absolute URL of a page
-console.log(currentURL);
 const firebaseConfig = {
   apiKey: "AIzaSyCxmaXD1yfUUHv2lK3vlYYj00FxGlTyeVc",
   authDomain: "task-management-7de21.firebaseapp.com",

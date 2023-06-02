@@ -1,6 +1,7 @@
 import { Avatar, Divider, Space, Tag, Typography } from "antd";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { BoardContext } from "../../context/BoardContext";
 
 interface DraggableItemProps {
   item: TaskItemType;
@@ -13,13 +14,16 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   index,
   onClick,
 }) => {
+  const { activeId, setActiveId } = useContext(BoardContext);
+  console.log("context :>> ", activeId);
+
   if (!item) return <></>;
   return (
     <Draggable key={item?.id} draggableId={item?._id} index={index}>
       {(provided, snapshot) => {
         return (
           <div
-            className="box-shadow m-2"
+            className="box-shadow m-2 task-draggable-item"
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -27,12 +31,16 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
               userSelect: "none",
               padding: 10,
               minHeight: "50px",
-              backgroundColor: "#fff",
+              backgroundColor: activeId === item._id ? "blue" : "#fff",
               color: "#000",
               borderRadius: 7,
               ...provided.draggableProps.style,
+              cursor: "move",
             }}
-            onClick={() => onClick(item)}
+            onClick={() => {
+              onClick(item);
+              setActiveId(item._id);
+            }}
           >
             <Space size={[0, 4]} wrap>
               <Tag color="magenta">magenta</Tag>

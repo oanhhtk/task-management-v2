@@ -19,7 +19,6 @@ export default function DroppableColumns({
   handleAddNewToDo,
   onItemClick,
 }: IDroppableColumnsProps) {
-  console.log("columKey :>> ", columnKey);
   return (
     <div
       style={{
@@ -58,7 +57,6 @@ export default function DroppableColumns({
             {columnKey === "TODO" ? (
               <Button
                 onClick={() => {
-                  console.log("TODO");
                   handleAddNewToDo();
                 }}
                 icon={<PlusOutlined />}

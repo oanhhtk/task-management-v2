@@ -47,8 +47,8 @@ export const BoardsLoader = async (folderId: string) => {
             name
             descriptions
             status
-            createdAt
-            updatedAt
+            issue_type
+            priority
           }
         }
         INPROGRESS {
@@ -58,8 +58,8 @@ export const BoardsLoader = async (folderId: string) => {
             name
             descriptions
             status
-            createdAt
-            updatedAt
+            issue_type
+            priority
           }
         }
         RELEASED {
@@ -69,8 +69,8 @@ export const BoardsLoader = async (folderId: string) => {
             name
             descriptions
             status
-            createdAt
-            updatedAt
+            issue_type
+            priority
           }
         }
         RESOLVED {
@@ -80,8 +80,8 @@ export const BoardsLoader = async (folderId: string) => {
             name
             descriptions
             status
-            createdAt
-            updatedAt
+            issue_type
+            priority
           }
         }
         TODO {
@@ -91,8 +91,8 @@ export const BoardsLoader = async (folderId: string) => {
             name
             descriptions
             status
-            createdAt
-            updatedAt
+            issue_type
+            priority
           }
         }
       }
@@ -108,17 +108,19 @@ export const BoardsLoader = async (folderId: string) => {
 };
 
 export const addTask = async (folderId: string, content: any) => {
-  const query = `mutation addTask($folderId: ID!, $content: ContentInput) {
+  const query = `mutation Mutation($folderId: ID!, $content: TaskContentInput) {
     addTask(folderId: $folderId, content: $content) {
       content {
         _id
         name
         descriptions
         status
-        createdAt
-        updatedAt
+        issue_type
+        priority
       }
       id
+      createdAt
+      updatedAt
     }
   }`;
 
