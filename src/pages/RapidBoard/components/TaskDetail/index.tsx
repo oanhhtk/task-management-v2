@@ -2,7 +2,8 @@ import { CaretRightOutlined, CloudUploadOutlined } from "@ant-design/icons";
 import { Button, Collapse, Descriptions, Spin, Tag, Typography } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import React, { useEffect, useState } from "react";
-import { COLUMS_TASK_LIST_ENUM } from "../../utils/constant";
+import { COLUMS_TASK_LIST_ENUM } from "../../../../utils/constant";
+import Loading from "../../../../components/Loading";
 
 type TaskDetailType = {
   data: TaskItemType | undefined;
@@ -24,17 +25,20 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
   }, [data]);
 
   return (
-    <div>
-      {loading ? (
-        <div
-          className="flex justify-center items-center"
-          style={{
-            minHeight: "100vh",
-          }}
-        >
-          <Spin spinning />
-        </div>
-      ) : (
+    <div
+      style={{
+        padding: "8px",
+        height: "100%",
+        maxHeight: "100vh",
+        overflow: "scroll",
+      }}
+    >
+      <div
+        style={{
+          width: "600px",
+        }}
+      >
+        <Loading loading={loading} />
         <div>
           {<Typography.Link>{data?.name}</Typography.Link>}
           <br />
@@ -132,7 +136,7 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
           </Collapse>
           <Button>Create Sub-task</Button>
         </div>
-      )}
+      </div>
     </div>
   );
 };

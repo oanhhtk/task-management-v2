@@ -66,6 +66,26 @@ export const BoardsLoader = async (folderId: string) => {
           }
           updatedAt
         }
+        RESOLVED {
+          id
+          updatedAt
+          content {
+            status
+            name
+            descriptions
+            _id
+          }
+        }
+        RELEASED {
+          updatedAt
+          id
+          content {
+            status
+            _id
+            descriptions
+            name
+          }
+        }
       }
     }
   }`;

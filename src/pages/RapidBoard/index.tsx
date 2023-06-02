@@ -1,17 +1,21 @@
-import { Col, Row, Spin, Typography } from "antd";
+import { Form, Spin, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useParams } from "react-router-dom";
 import DroppableColumns from "../../components/DroppableColumn";
-import TaskDetail from "../../components/TaskDetail";
 import { BoardsLoader } from "../../service";
+import TaskDetail from "./components/TaskDetail";
+import UseForm from "./components/UseForm";
 
 function RapidBoard() {
   const { folderId } = useParams();
   const [columns, setColumns] =
     useState<Record<string, DroppableColumnsType>>();
 
+  const [form] = Form.useForm();
+
   const [taskDetail, setTaskDetail] = useState<TaskItemType>();
+  const [openUseForm, setOpenUseForm] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -91,6 +95,17 @@ function RapidBoard() {
       }));
     }
   };
+  const [formSubmiting, setFormSubmiting] = useState(false);
+
+  const onFromSubmit = async (value: any) => {
+    console.log(value);
+    try {
+      setFormSubmiting(true);
+      setTimeout(() => {
+        setFormSubmiting(false);
+      }, 5000);
+    } catch (error) {}
+  };
 
   return (
     <div
@@ -108,11 +123,10 @@ function RapidBoard() {
       >
         ECOPAY Sprint 20
       </Typography.Text>
-      <Row justify="space-between">
-        <Col
-          span={16}
+      <div className="flex">
+        <div
           style={{
-            minWidth: "700px",
+            // minWidth: "700px",
             height: "100%",
             overflow: "scroll",
           }}
@@ -124,7 +138,7 @@ function RapidBoard() {
               overflow: "scroll",
             }}
           >
-            <div className="flex justify-around h-full">
+            <div className="flex h-full">
               {columns ? (
                 <DragDropContext onDragEnd={onDragEnd}>
                   {Object.entries(columns).map(([columnKey, column]) => {
@@ -135,25 +149,26 @@ function RapidBoard() {
                         columnData={column}
                         columnName={column.name}
                         handleAddNewToDo={() => {
-                          setColumns(
-                            (prev) =>
-                              prev && {
-                                ...prev,
-                                ["TODO"]: {
-                                  ...prev["TODO"],
-                                  items: [
-                                    {
-                                      _id: `${column?.items.length + 1}`,
-                                      id: `${column?.items.length + 1}`,
-                                      name: "string",
-                                      descriptions: "This is descriptions",
-                                      status: "TODO",
-                                    },
-                                    ...prev["TODO"]?.items,
-                                  ],
-                                },
-                              }
-                          );
+                          setOpenUseForm(true);
+                          // setColumns(
+                          //   (prev) =>
+                          //     prev && {
+                          //       ...prev,
+                          //       ["TODO"]: {
+                          //         ...prev["TODO"],
+                          //         items: [
+                          //           {
+                          //             _id: `${column?.items.length + 1}`,
+                          //             id: `${column?.items.length + 1}`,
+                          //             name: "string",
+                          //             descriptions: "This is descriptions",
+                          //             status: "TODO",
+                          //           },
+                          //           ...prev["TODO"]?.items,
+                          //         ],
+                          //       },
+                          //     }
+                          // );
                         }}
                         onItemClick={(item) => {
                           console.log(item);
@@ -170,19 +185,24 @@ function RapidBoard() {
               )}
             </div>
           </div>
-        </Col>
-        <Col
-          span={8}
-          style={{
-            padding: "8px",
-            height: "100%",
-            maxHeight: "100vh",
-            overflow: "scroll",
-          }}
-        >
+        </div>
+        <div>
           <TaskDetail data={taskDetail} />
-        </Col>
-      </Row>
+        </div>
+      </div>
+
+      {openUseForm ? (
+        <UseForm
+          open={openUseForm}
+          onCancel={() => setOpenUseForm(false)}
+          projectName={"oanh project"}
+          form={form}
+          onSubmit={onFromSubmit}
+          formProps={{
+            isSubmiting: formSubmiting,
+          }}
+        />
+      ) : null}
     </div>
   );
 }
