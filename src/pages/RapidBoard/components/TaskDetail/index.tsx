@@ -36,6 +36,7 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
       <div
         style={{
           width: "600px",
+          position: "relative",
         }}
       >
         <Loading loading={loading} />

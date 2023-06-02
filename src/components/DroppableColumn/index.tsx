@@ -19,6 +19,7 @@ export default function DroppableColumns({
   handleAddNewToDo,
   onItemClick,
 }: IDroppableColumnsProps) {
+  console.log("columKey :>> ", columnKey);
   return (
     <div
       style={{
@@ -97,6 +98,7 @@ export default function DroppableColumns({
                     <DraggableList
                       list={columnData?.items}
                       onItemClick={onItemClick}
+                      key={columnKey}
                     />
                     {provided.placeholder}
                   </div>

@@ -10,11 +10,16 @@ import {
   Modal,
   Select,
   Spin,
+  Tag,
   TreeSelect,
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import React from "react";
 import Loading from "../../../../components/Loading";
+import {
+  ISSUE_TYPES_OPTIONS,
+  PRIORITY_OPTIONS,
+} from "../../../../utils/constant";
 
 type UseFormPropsType = {
   open: boolean;
@@ -58,7 +63,8 @@ const UseForm: React.FC<UseFormPropsType> = ({
       // footer={null}
       okText="Submit"
       onOk={() => {
-        onSubmit({});
+        const formValues = form.getFieldsValue();
+        onSubmit(formValues);
       }}
       okButtonProps={{
         disabled: isSubmiting,
@@ -82,49 +88,63 @@ const UseForm: React.FC<UseFormPropsType> = ({
             {projectName}
           </p>
         </Form.Item>
-        <Form.Item label="Issue Type" name="disabled" valuePropName="checked">
-          <Checkbox checked={true}>Task</Checkbox>
-        </Form.Item>
-        <Form.Item label="Name">
-          <Input placeholder="Please enter task name" />
-        </Form.Item>
-        <Form.Item label="Priority">
-          <Select
-            placeholder="Select priority"
-            options={[
-              {
-                value: "low",
-                label: "Low",
-              },
-              {
-                value: "hight",
-                label: "Hight",
-              },
-              {
-                value: "lowest",
-                label: "Lowest",
-              },
-              {
-                value: "medium",
-                label: "Medium",
-              },
-              {
-                value: "blocker",
-                label: "Blocker",
-              },
-            ]}
-          />
+
+        <Form.Item style={{ marginBottom: 0 }} label="Issue type">
+          <Form.Item
+            name="issue_type"
+            rules={[{ required: true }]}
+            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
+          >
+            <Select
+              placeholder="Select issue type"
+              value="task"
+              options={ISSUE_TYPES_OPTIONS.map((item) => ({
+                ...item,
+                label: (
+                  <Tag
+                    color={item.color}
+                    className="flex justify-center items-center create-form-tag"
+                    bordered={false}
+                  >
+                    {item.label}
+                  </Tag>
+                ),
+              }))}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Priority"
+            name="priority"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
+          >
+            <Select
+              placeholder="Select priority"
+              options={PRIORITY_OPTIONS.map((item) => ({
+                ...item,
+                label: (
+                  <Tag
+                    className="flex justify-center items-center create-form-tag"
+                    color={item.color}
+                    bordered={false}
+                  >
+                    {item.label}
+                  </Tag>
+                ),
+              }))}
+            />
+          </Form.Item>
         </Form.Item>
 
-        <Form.Item label="DatePicker">
-          <DatePicker
-            placeholder="select start date"
-            style={{
-              width: "100%",
-            }}
-          />
+        <Form.Item label="Name" name="name">
+          <Input placeholder="Please enter task name" />
         </Form.Item>
-        <Form.Item label="Descriptions">
+
+        <Form.Item label="Descriptions" name="descriptions">
           <TextArea rows={4} placeholder="Enter descriptions" />
         </Form.Item>
         <Form.Item

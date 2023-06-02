@@ -13,7 +13,7 @@ const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {
         list?.map((item, index) => {
           return (
             <DraggableItem
-              key={item?._id}
+              key={item?.id}
               item={item?.content}
               index={index}
               onClick={onItemClick}

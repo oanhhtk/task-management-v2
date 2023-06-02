@@ -13,6 +13,7 @@ export const foldersLoader = async () => {
   return data;
   1;
 };
+
 export const getBoardList = async () => {
   const query = `query Boards {
     boards {
@@ -35,15 +36,19 @@ export const getBoardList = async () => {
 export const BoardsLoader = async (folderId: string) => {
   const query = `query Query($folderId: String!) {
     board(folderId: $folderId) {
+      name
+      id
+      createdAt
       tasks {
-        TODO {
-          updatedAt
+        DONE {
           id
           content {
-            status
+            _id
             name
             descriptions
-            _id
+            status
+            createdAt
+            updatedAt
           }
         }
         INPROGRESS {
@@ -53,37 +58,41 @@ export const BoardsLoader = async (folderId: string) => {
             name
             descriptions
             status
-          }
-          updatedAt
-        }
-        DONE {
-          id
-          content {
-            _id
-            name
-            descriptions
-            status
-          }
-          updatedAt
-        }
-        RESOLVED {
-          id
-          updatedAt
-          content {
-            status
-            name
-            descriptions
-            _id
+            createdAt
+            updatedAt
           }
         }
         RELEASED {
-          updatedAt
           id
           content {
-            status
             _id
-            descriptions
             name
+            descriptions
+            status
+            createdAt
+            updatedAt
+          }
+        }
+        RESOLVED {
+          id
+          content {
+            _id
+            name
+            descriptions
+            status
+            createdAt
+            updatedAt
+          }
+        }
+        TODO {
+          id
+          content {
+            _id
+            name
+            descriptions
+            status
+            createdAt
+            updatedAt
           }
         }
       }
@@ -96,4 +105,28 @@ export const BoardsLoader = async (folderId: string) => {
 
   const data = await graphQLRequest({ query, variables });
   return data;
+};
+
+export const addTask = async (folderId: string, content: any) => {
+  const query = `mutation addTask($folderId: ID!, $content: ContentInput) {
+    addTask(folderId: $folderId, content: $content) {
+      content {
+        _id
+        name
+        descriptions
+        status
+        createdAt
+        updatedAt
+      }
+      id
+    }
+  }`;
+
+  const variables = {
+    folderId,
+    content,
+  };
+  const data = await graphQLRequest({ query, variables });
+  return data;
+  1;
 };

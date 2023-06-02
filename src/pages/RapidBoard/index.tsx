@@ -7,54 +7,41 @@ import { BoardsLoader } from "../../service";
 import TaskDetail from "./components/TaskDetail";
 import UseForm from "./components/UseForm";
 
+const orderSortArr = ["TODO", "INPROGRESS", "RESOLVED", "DONE", "RELEASED"];
+
 function RapidBoard() {
   const { folderId } = useParams();
   const [columns, setColumns] =
     useState<Record<string, DroppableColumnsType>>();
-
   const [form] = Form.useForm();
+  const [projectName, setProjectName] = useState("");
 
   const [taskDetail, setTaskDetail] = useState<TaskItemType>();
   const [openUseForm, setOpenUseForm] = useState(false);
+  const [formSubmiting, setFormSubmiting] = useState(false);
 
   useEffect(() => {
     (async () => {
       if (!folderId) return;
       const res = await BoardsLoader(folderId);
       console.log(res);
+      const data: any = {};
       const result: any = {};
+      setProjectName(res?.board?.name);
       Object.entries(res?.board?.tasks).map(([key, value]) => {
-        result[key] = {
+        data[key] = {
           name: key,
           items: value,
         };
       });
+      orderSortArr.map((key) => {
+        result[key] = data[key];
+      });
       setColumns(result);
-
-      //   TODO: {
-      //     name: "To do",
-      //     items: res?.board?.folders?.map((fd: any) => {
-      //       if (
-      //         fd?.content &&
-      //         typeof fd?.content !== "string" &&
-      //         Object.keys(fd?.content).length > 0
-      //       ) {
-      //         return fd?.content;
-      //       }
-      //     }),
-      //   },
-      //   INPROGRESS: {
-      //     name: "Inprogress",
-      //     items: [],
-      //   },
-      //   DONE: {
-      //     name: "Done",
-      //     items: [],
-      //   },
-      // });
     })();
   }, [folderId]);
 
+  console.log("columns :>> ", columns);
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -95,7 +82,6 @@ function RapidBoard() {
       }));
     }
   };
-  const [formSubmiting, setFormSubmiting] = useState(false);
 
   const onFromSubmit = async (value: any) => {
     console.log(value);
@@ -103,6 +89,7 @@ function RapidBoard() {
       setFormSubmiting(true);
       setTimeout(() => {
         setFormSubmiting(false);
+        setOpenUseForm(false);
       }, 5000);
     } catch (error) {}
   };
@@ -116,17 +103,17 @@ function RapidBoard() {
       }}
     >
       <Typography.Text
-        className="text-center"
+        className="text-center logo"
         style={{
           marginTop: "30px",
         }}
       >
-        ECOPAY Sprint 20
+        {projectName}
       </Typography.Text>
       <div className="flex">
         <div
           style={{
-            // minWidth: "700px",
+            width: "100%",
             height: "100%",
             overflow: "scroll",
           }}
@@ -138,7 +125,13 @@ function RapidBoard() {
               overflow: "scroll",
             }}
           >
-            <div className="flex h-full">
+            <div
+              className="flex h-full"
+              style={{
+                width: "1240px",
+                minWidth: "100%",
+              }}
+            >
               {columns ? (
                 <DragDropContext onDragEnd={onDragEnd}>
                   {Object.entries(columns).map(([columnKey, column]) => {
@@ -195,7 +188,7 @@ function RapidBoard() {
         <UseForm
           open={openUseForm}
           onCancel={() => setOpenUseForm(false)}
-          projectName={"oanh project"}
+          projectName={projectName}
           form={form}
           onSubmit={onFromSubmit}
           formProps={{
