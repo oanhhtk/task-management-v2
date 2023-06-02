@@ -11,6 +11,8 @@ function RapidBoard() {
   const [columns, setColumns] =
     useState<Record<string, DroppableColumnsType>>();
 
+  const [taskDetail, setTaskDetail] = useState<TaskItemType>();
+
   useEffect(() => {
     (async () => {
       if (!folderId) return;
@@ -90,7 +92,6 @@ function RapidBoard() {
     }
   };
 
-  console.log("columns :>> ", columns);
   return (
     <div
       style={{
@@ -119,6 +120,7 @@ function RapidBoard() {
           <div
             style={{
               maxHeight: "100vh",
+              minHeight: "100vh",
               overflow: "scroll",
             }}
           >
@@ -126,7 +128,6 @@ function RapidBoard() {
               {columns ? (
                 <DragDropContext onDragEnd={onDragEnd}>
                   {Object.entries(columns).map(([columnKey, column]) => {
-                    console.log(columnKey);
                     return (
                       <DroppableColumns
                         key={columnKey}
@@ -154,12 +155,16 @@ function RapidBoard() {
                               }
                           );
                         }}
+                        onItemClick={(item) => {
+                          console.log(item);
+                          setTaskDetail(item);
+                        }}
                       />
                     );
                   })}
                 </DragDropContext>
               ) : (
-                <div className="text-center">
+                <div className="flex justify-center items-center">
                   <Spin />
                 </div>
               )}
@@ -175,8 +180,7 @@ function RapidBoard() {
             overflow: "scroll",
           }}
         >
-          <h4>Detail</h4>
-          <TaskDetail />
+          <TaskDetail data={taskDetail} />
         </Col>
       </Row>
     </div>

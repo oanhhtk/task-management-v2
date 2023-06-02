@@ -339,9 +339,6 @@ body {
 .ant-layout-sider {
   background: #fff !important;
 }
-
-.logo {
-  text-align: center;
+.font-bold {
   font-weight: 700;
-  font-size: 1rem;
 }

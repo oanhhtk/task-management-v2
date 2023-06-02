@@ -9,6 +9,7 @@ export interface IDroppableColumnsProps {
   columnData: DroppableColumnsType;
   columnName: string;
   handleAddNewToDo: () => void;
+  onItemClick: (item: TaskItemType) => void;
 }
 
 export default function DroppableColumns({
@@ -16,6 +17,7 @@ export default function DroppableColumns({
   columnData,
   columnName,
   handleAddNewToDo,
+  onItemClick,
 }: IDroppableColumnsProps) {
   return (
     <div
@@ -92,7 +94,10 @@ export default function DroppableColumns({
                     }}
                     key={columnKey}
                   >
-                    <DraggableList list={columnData?.items} />
+                    <DraggableList
+                      list={columnData?.items}
+                      onItemClick={onItemClick}
+                    />
                     {provided.placeholder}
                   </div>
                 );

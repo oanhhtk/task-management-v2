@@ -6,9 +6,9 @@ import { graphQLRequest } from "../../utils/request";
 
 export default function Login() {
   const auth = getAuth();
-  // const navigate = useNavigate();
-  // const { user } = useContext(AuthContext);
-
+  /**
+   *handle login with google
+   */
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
 
@@ -36,18 +36,6 @@ export default function Login() {
   }
 
   return (
-    // <div className="flex justify-center items-center text-center">
-    //   <div>
-    //     <Typography.Title>Welcome to Task Management App</Typography.Title>
-    //     <Button
-    //       type="primary"
-    //       className="text-center"
-    //       onClick={handleLoginWithGoogle}
-    //     >
-    //       Login with Google
-    //     </Button>
-    //   </div>
-    // </div>
     <>
       <Typography.Title
         style={{

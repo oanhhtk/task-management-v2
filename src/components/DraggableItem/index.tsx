@@ -5,9 +5,14 @@ import { Draggable } from "react-beautiful-dnd";
 interface DraggableItemProps {
   item: TaskItemType;
   index: number;
+  onClick: (item: TaskItemType) => void;
 }
 
-const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
+const DraggableItem: React.FC<DraggableItemProps> = ({
+  item,
+  index,
+  onClick,
+}) => {
   if (!item) return <></>;
   return (
     <Draggable key={item?.id} draggableId={item?._id} index={index}>
@@ -25,10 +30,9 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index }) => {
               backgroundColor: "#fff",
               color: "#000",
               borderRadius: 7,
-              // border: snapshot.isDragging ? '' : '1px dashed #ddd',
-              boxShadow: "",
               ...provided.draggableProps.style,
             }}
+            onClick={() => onClick(item)}
           >
             <Space size={[0, 4]} wrap>
               <Tag color="magenta">magenta</Tag>
