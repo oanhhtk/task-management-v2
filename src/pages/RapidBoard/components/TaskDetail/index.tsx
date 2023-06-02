@@ -20,7 +20,6 @@ const panelStyle = {
   border: "none",
 };
 const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
-  console.log("data :>> ", data);
   if (!data) return <></>;
   const [loading, setLoading] = useState(false);
 

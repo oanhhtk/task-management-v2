@@ -3,7 +3,7 @@ import DraggableItem from "../DraggableItem";
 
 interface DraggableListProps {
   list: any[];
-  onItemClick: (item: TaskItemType) => void;
+  onItemClick: (item: any) => void;
 }
 
 const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {

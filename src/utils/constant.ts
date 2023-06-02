@@ -77,6 +77,6 @@ export const PRIORITY_OPTIONS = [
   },
 ];
 
-// export const GRAPHQL_SERVER =
-//   "https://oanhhtk-task-management-server.onrender.com";
-export const GRAPHQL_SERVER = "http://localhost:4000";
+export const GRAPHQL_SERVER =
+  "https://oanhhtk-task-management-server.onrender.com";
+// export const GRAPHQL_SERVER = "http://localhost:4000";

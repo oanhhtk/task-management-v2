@@ -7,6 +7,7 @@ import { BoardsLoader, addTask } from "../../service";
 import TaskDetail from "./components/TaskDetail";
 import UseForm from "./components/UseForm";
 import BoardProvier from "../../context/BoardContext";
+import Loading from "../../components/Loading";
 
 const orderSortArr = ["TODO", "INPROGRESS", "RESOLVED", "DONE", "RELEASED"];
 
@@ -20,10 +21,13 @@ function RapidBoard() {
   const [taskDetail, setTaskDetail] = useState<any>();
   const [openUseForm, setOpenUseForm] = useState(false);
   const [formSubmiting, setFormSubmiting] = useState(false);
+  const [triggerReload, setTriggerReload] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      if (!folderId) return;
+  const getBoards = async () => {
+    if (!folderId) return;
+    try {
+      setLoading(true);
       const res = await BoardsLoader(folderId);
       const data: any = {};
       const result: any = {};
@@ -38,8 +42,20 @@ function RapidBoard() {
         result[key] = data[key];
       });
       setColumns(result);
-    })();
-  }, [folderId]);
+    } catch (error) {
+      notification.error({
+        type: "error",
+        message: "Error!",
+        description: "Failed to fetch board data. Try again!",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getBoards();
+  }, [folderId, triggerReload]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -82,6 +98,8 @@ function RapidBoard() {
     }
   };
 
+  useEffect(() => {}, [triggerReload]);
+
   const onFromSubmit = async (value: any) => {
     value.status = "TODO";
     if (!folderId) return;
@@ -93,6 +111,7 @@ function RapidBoard() {
         message: "Successfully",
         description: "Add new task successfully",
       });
+      setTriggerReload(true);
     } catch (error) {
       notification.success({
         type: "error",
@@ -123,6 +142,8 @@ function RapidBoard() {
           {projectName}
         </Typography.Text>
         <div className="flex">
+          <Loading loading={loading} />
+
           <div
             style={{
               width: "100%",
@@ -183,9 +204,7 @@ function RapidBoard() {
                     })}
                   </DragDropContext>
                 ) : (
-                  <div className="flex justify-center items-center">
-                    <Spin />
-                  </div>
+                  <Loading loading />
                 )}
               </div>
             </div>

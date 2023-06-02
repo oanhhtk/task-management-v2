@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const BoardContext = createContext({
   activeId: "",
-  setActiveId: (string: string) => null,
+  setActiveId: null,
 });
 
 export default function BoardProvier({ children }: any) {

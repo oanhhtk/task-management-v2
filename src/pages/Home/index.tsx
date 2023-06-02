@@ -17,6 +17,7 @@ import "../../firebase/config";
 import { theme } from "antd";
 import { useParams } from "react-router-dom";
 import { getBoardList } from "../../service";
+import Loading from "../../components/Loading";
 
 interface BoardItemDataType {
   id: any;
@@ -109,7 +110,7 @@ function Home() {
           })}
         />
       ) : (
-        <Spin spinning />
+        <Loading loading />
       )}
     </div>
   );
