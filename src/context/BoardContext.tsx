@@ -1,9 +1,11 @@
 import { createContext, useState } from "react";
 
-export const BoardContext = createContext({
-  activeId: "",
-  setActiveId: null,
-});
+type BoardContextType = {
+  activeId?: string;
+  setActiveId?: (string: string) => void;
+  // ...
+};
+export const BoardContext = createContext<BoardContextType>({});
 
 export default function BoardProvier({ children }: any) {
   const [activeId, setActiveId] = useState<any>("");

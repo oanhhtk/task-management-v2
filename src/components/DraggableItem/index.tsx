@@ -39,7 +39,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
             }}
             onClick={() => {
               onClick(item);
-              setActiveId(item._id);
+              setActiveId?.(item._id);
             }}
           >
             <Space size={[0, 4]} wrap>

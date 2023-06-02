@@ -98,8 +98,6 @@ function RapidBoard() {
     }
   };
 
-  useEffect(() => {}, [triggerReload]);
-
   const onFromSubmit = async (value: any) => {
     value.status = "TODO";
     if (!folderId) return;
