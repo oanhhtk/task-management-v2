@@ -9,7 +9,7 @@ export interface IDroppableColumnsProps {
   columnData: DroppableColumnsType;
   columnName: string;
   handleAddNewToDo: () => void;
-  onItemClick: (item: TaskItemType) => void;
+  onItemClick: (item: { id: string; content: TaskItemType }) => void;
 }
 
 export default function DroppableColumns({

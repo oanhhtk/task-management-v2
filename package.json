@@ -11,6 +11,7 @@
   "dependencies": {
     "antd": "^5.5.1",
     "firebase": "^9.22.1",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
@@ -18,6 +19,7 @@
     "react-topbar-progress-indicator": "^4.1.1"
   },
   "devDependencies": {
+    "@types/moment": "^2.13.0",
     "@types/react": "^18.0.28",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "^18.0.11",

@@ -4,9 +4,15 @@ import Dragger from "antd/es/upload/Dragger";
 import React, { useEffect, useState } from "react";
 import { COLUMS_TASK_LIST_ENUM } from "../../../../utils/constant";
 import Loading from "../../../../components/Loading";
+import { formatDate } from "../../../../utils/common";
 
 type TaskDetailType = {
-  data: TaskItemType | undefined;
+  data: {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    content: TaskItemType;
+  };
 };
 
 const panelStyle = {
@@ -14,6 +20,7 @@ const panelStyle = {
   border: "none",
 };
 const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
+  console.log("data :>> ", data);
   if (!data) return <></>;
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +48,7 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
       >
         <Loading loading={loading} />
         <div>
-          {<Typography.Link>{data?.name}</Typography.Link>}
+          {<Typography.Link>{data?.content?.name}</Typography.Link>}
           <br />
           <br />
 
@@ -60,21 +67,26 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
             >
               <Descriptions bordered size={"default"} column={1}>
                 <Descriptions.Item label="Name" className="font-bold">
-                  {data?.name}
+                  {data?.content?.name}
                 </Descriptions.Item>
                 <Descriptions.Item label="Status">
-                  <Tag color={COLUMS_TASK_LIST_ENUM?.[data?.status]?.color}>
-                    {COLUMS_TASK_LIST_ENUM?.[data?.status]?.title}
+                  <Tag
+                    color={
+                      COLUMS_TASK_LIST_ENUM?.[data?.content?.status]?.color
+                    }
+                  >
+                    {COLUMS_TASK_LIST_ENUM?.[data?.content?.status]?.title}
                   </Tag>
                 </Descriptions.Item>
-                <Descriptions.Item label="Updated at">
-                  {data?._id}
+                <Descriptions.Item label="Created at">
+                  {formatDate(data?.createdAt)}
                 </Descriptions.Item>
-                {/* <Descriptions.Item label="Created ad">
-          {data?.created_at}
-        </Descriptions.Item> */}
+                <Descriptions.Item label="Updated at">
+                  {formatDate(data?.updatedAt)}
+                </Descriptions.Item>
+
                 <Descriptions.Item label="Descriptions">
-                  {data?.descriptions}
+                  {data?.content?.descriptions}
                 </Descriptions.Item>
               </Descriptions>
             </Collapse.Panel>

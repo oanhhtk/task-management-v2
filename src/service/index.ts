@@ -42,6 +42,8 @@ export const BoardsLoader = async (folderId: string) => {
       tasks {
         DONE {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name
@@ -53,6 +55,8 @@ export const BoardsLoader = async (folderId: string) => {
         }
         INPROGRESS {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name
@@ -64,6 +68,8 @@ export const BoardsLoader = async (folderId: string) => {
         }
         RELEASED {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name
@@ -75,6 +81,8 @@ export const BoardsLoader = async (folderId: string) => {
         }
         RESOLVED {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name
@@ -86,6 +94,8 @@ export const BoardsLoader = async (folderId: string) => {
         }
         TODO {
           id
+          createdAt
+          updatedAt
           content {
             _id
             name

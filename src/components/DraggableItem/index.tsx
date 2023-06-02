@@ -15,7 +15,6 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   onClick,
 }) => {
   const { activeId, setActiveId } = useContext(BoardContext);
-  console.log("context :>> ", activeId);
 
   if (!item) return <></>;
   return (
@@ -31,7 +30,8 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
               userSelect: "none",
               padding: 10,
               minHeight: "50px",
-              backgroundColor: activeId === item._id ? "blue" : "#fff",
+              backgroundColor:
+                activeId === item._id ? "rgb(222,235,255)" : "#fff",
               color: "#000",
               borderRadius: 7,
               ...provided.draggableProps.style,
@@ -43,8 +43,11 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
             }}
           >
             <Space size={[0, 4]} wrap>
-              <Tag color="magenta">magenta</Tag>
-              <Tag color="red">red</Tag>
+              {item?.priority ? (
+                <Tag bordered={false} color="warning">
+                  {item?.priority}
+                </Tag>
+              ) : null}
             </Space>
             <Space direction="vertical">
               <Typography.Title level={5}>{item?.name}</Typography.Title>

@@ -17,7 +17,6 @@ const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {
               item={item?.content}
               index={index}
               onClick={() => {
-                console.log("object :>> ", item?.content?._id);
                 onItemClick(item);
               }}
             />

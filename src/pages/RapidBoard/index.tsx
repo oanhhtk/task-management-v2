@@ -17,7 +17,7 @@ function RapidBoard() {
   const [form] = Form.useForm();
   const [projectName, setProjectName] = useState("");
 
-  const [taskDetail, setTaskDetail] = useState<TaskItemType>();
+  const [taskDetail, setTaskDetail] = useState<any>();
   const [openUseForm, setOpenUseForm] = useState(false);
   const [formSubmiting, setFormSubmiting] = useState(false);
 
