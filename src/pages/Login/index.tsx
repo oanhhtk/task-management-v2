@@ -33,19 +33,13 @@ export default function Login() {
       },
     });
     // console.log("register", { data });
+    if (uid) navigate("/");
   };
 
   if (localStorage.getItem("accessToken")) {
     console.log("has accessToken", localStorage.getItem("accessToken"));
     return <Navigate to="/" />;
   }
-
-  useEffect(() => {
-    if (user?.uid) {
-      console.log("has user");
-      navigate("/");
-    }
-  }, [user]);
 
   return (
     <>
