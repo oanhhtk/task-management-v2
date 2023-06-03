@@ -142,3 +142,23 @@ export const addTask = async (folderId: string, content: any) => {
   return data;
   1;
 };
+
+export const addBoard = async (content: any) => {
+  const query = `mutation Mutation($name: String!, $administrators: String!, $board_type: String!, $descriptions: String) {
+    addBoard(name: $name, administrators: $administrators, board_type: $board_type, descriptions: $descriptions) {
+      id
+      name
+      createdAt
+      administrators
+      board_type
+      descriptions
+    }
+  }`;
+
+  const variables = {
+    ...content,
+  };
+  const data = await graphQLRequest({ query, variables });
+  return data;
+  1;
+};
