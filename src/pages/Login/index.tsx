@@ -1,11 +1,15 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { graphQLRequest } from "../../utils/request";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function Login() {
+  const navigate = useNavigate();
   const auth = getAuth();
+  const { user } = useContext(AuthContext);
   /**
    *handle login with google
    */
@@ -31,9 +35,18 @@ export default function Login() {
     // console.log("register", { data });
   };
 
-  if (localStorage.getItem("accessToken")) {
-    return <Navigate to="/" />;
-  }
+  // if (localStorage.getItem("accessToken")) {
+  //   console.log("has accessToken", localStorage.getItem("accessToken"));
+  //   return <Navigate to="/rapid-board/6477166bcc6a4fbcf363e4a3" />;
+  // }
+
+  useEffect(() => {
+    if (user?.uid) {
+      console.log("has user");
+      //  <Navigate to="/" />;
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <>

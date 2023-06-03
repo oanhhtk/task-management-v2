@@ -2,8 +2,13 @@ import { Spin } from "antd";
 import { getAuth } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
-export const AuthContext = createContext({});
+type AuthContextType = {
+  user?: any;
+  setUser?: (user: any) => void;
+};
+export const AuthContext = createContext<AuthContextType>({});
 
 export default function AuthProvider({ children }: any) {
   const [user, setUser] = useState<any>({});
@@ -13,12 +18,11 @@ export default function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubcribed = auth.onIdTokenChanged((user: any) => {
-      // return new user data
       console.log("[From AuthProvider]", { user });
       if (user?.uid) {
         setUser(user);
-        if (user?.accessToken !== localStorage.getItem("accessToken")) {
-          localStorage.setItem("accessToken", user?.accessToken);
+        if (user.accessToken !== localStorage.getItem("accessToken")) {
+          localStorage.setItem("accessToken", user.accessToken);
           window.location.reload();
         }
         setIsLoading(false);
@@ -40,7 +44,7 @@ export default function AuthProvider({ children }: any) {
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      {isLoading ? <Spin className="text-center" /> : <>{children}</>}
+      {isLoading ? <Loading loading /> : <>{children}</>}
     </AuthContext.Provider>
   );
 }
