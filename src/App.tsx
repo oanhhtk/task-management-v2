@@ -68,11 +68,7 @@ const App: React.FC = () => {
     {
       key: "1",
       label: (
-        <a
-          onClick={() => {
-            auth?.signOut();
-          }}
-        >
+        <a onClick={() => auth?.signOut()}>
           Logout <LogoutOutlined />
         </a>
       ),

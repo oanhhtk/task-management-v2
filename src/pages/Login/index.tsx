@@ -35,15 +35,14 @@ export default function Login() {
     // console.log("register", { data });
   };
 
-  // if (localStorage.getItem("accessToken")) {
-  //   console.log("has accessToken", localStorage.getItem("accessToken"));
-  //   return <Navigate to="/rapid-board/6477166bcc6a4fbcf363e4a3" />;
-  // }
+  if (localStorage.getItem("accessToken")) {
+    console.log("has accessToken", localStorage.getItem("accessToken"));
+    return <Navigate to="/" />;
+  }
 
   useEffect(() => {
     if (user?.uid) {
       console.log("has user");
-      //  <Navigate to="/" />;
       navigate("/");
     }
   }, [user]);
