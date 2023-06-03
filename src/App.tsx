@@ -1,12 +1,26 @@
 import {
+  ApartmentOutlined,
   AppstoreOutlined,
+  ControlOutlined,
+  DownOutlined,
+  LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  ControlOutlined,
-  ApartmentOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
-import React, { useState } from "react";
+import {
+  Avatar,
+  Button,
+  Col,
+  Dropdown,
+  Layout,
+  Menu,
+  MenuProps,
+  Row,
+  Space,
+  theme,
+} from "antd";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "./context/AuthProvider";
 import Home from "./pages/Home";
 
 const { Header, Sider, Content } = Layout;
@@ -38,14 +52,28 @@ const MENU_LIST_ENUM: Record<string, any> = {
     value: "recently-visited",
   },
 };
+
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [currentMenu, setCurrentMenu] = useState("All boards");
+  const {
+    user: { displayName, photoURL, auth },
+  } = useContext(AuthContext);
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <a onClick={() => auth?.signOut()}>
+          Logout <LogoutOutlined />
+        </a>
+      ),
+    },
+  ];
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -72,16 +100,36 @@ const App: React.FC = () => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: "#fff" }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
+          <Row className="justify-between ">
+            <Col>
+              <Button
+                type="text"
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                style={{
+                  fontSize: "16px",
+                  width: 64,
+                  height: 64,
+                }}
+              />
+            </Col>
+            <Col className="flex gap-2 items-center mr-3">
+              <Dropdown menu={{ items }} placement="bottomRight">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  style={{
+                    color: "#131313",
+                  }}
+                >
+                  <Space>
+                    <Avatar src={photoURL} />
+                    {displayName}
+                    <DownOutlined />
+                  </Space>
+                </a>
+              </Dropdown>
+            </Col>
+          </Row>
         </Header>
         <Content
           style={{
