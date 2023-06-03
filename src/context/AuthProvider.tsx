@@ -20,10 +20,11 @@ export default function AuthProvider({ children }: any) {
     const unsubcribed = auth.onIdTokenChanged((user: any) => {
       console.log("[From AuthProvider]", { user });
       if (user?.uid) {
+        console.log("uid :>> ", user);
         setUser(user);
         if (user.accessToken !== localStorage.getItem("accessToken")) {
           localStorage.setItem("accessToken", user.accessToken);
-          window.location.reload();
+          // window.location.reload();
         }
         setIsLoading(false);
         return;

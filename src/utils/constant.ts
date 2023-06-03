@@ -76,7 +76,18 @@ export const PRIORITY_OPTIONS = [
     color: "default",
   },
 ];
-
+export const BOARD_TYPE = [
+  {
+    value: "scrum",
+    label: "Scrum",
+    color: "purple",
+  },
+  {
+    value: "kanban",
+    label: "Kanban",
+    color: "geekblue",
+  },
+];
 export const GRAPHQL_SERVER =
   "https://oanhhtk-task-management-server.onrender.com";
 // export const GRAPHQL_SERVER = "http://localhost:4000";

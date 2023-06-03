@@ -139,7 +139,7 @@ const App: React.FC = () => {
             background: colorBgContainer,
           }}
         >
-          <Home />
+          <Home currentMenu={currentMenu} />
         </Content>
       </Layout>
     </Layout>

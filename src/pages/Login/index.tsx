@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Typography } from "antd";
+import { Button, Checkbox, Form, Input, Typography, message } from "antd";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { Navigate, useNavigate } from "react-router-dom";
 import { graphQLRequest } from "../../utils/request";
@@ -17,35 +17,32 @@ export default function Login() {
     const provider = new GoogleAuthProvider();
 
     const {
-      user: { uid, displayName },
+      user: { uid, displayName, email },
     } = await signInWithPopup(auth, provider);
 
     const { data } = await graphQLRequest({
-      query: `mutation register($uid: String!, $name: String!) {
-      register(uid: $uid, name: $name) {
-        uid
-        name
-      }
-    }`,
+      query: `mutation Register($uid: String!, $name: String!, $email: String!) {
+        register(uid: $uid, name: $name, email: $email) {
+          uid
+          email
+          name
+        }
+      }`,
       variables: {
         uid,
         name: displayName,
+        email,
       },
     });
     // console.log("register", { data });
+    if (uid) navigate("/");
+    message.success("Login successfully!");
   };
 
   if (localStorage.getItem("accessToken")) {
     console.log("has accessToken", localStorage.getItem("accessToken"));
     return <Navigate to="/" />;
   }
-
-  useEffect(() => {
-    if (user?.uid) {
-      console.log("has user");
-      navigate("/");
-    }
-  }, [user]);
 
   return (
     <>

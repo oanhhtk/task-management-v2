@@ -1,18 +1,5 @@
 import { CloudUploadOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Cascader,
-  Checkbox,
-  DatePicker,
-  Form,
-  FormInstance,
-  Input,
-  Modal,
-  Select,
-  Spin,
-  Tag,
-  TreeSelect,
-} from "antd";
+import { Form, FormInstance, Input, Modal, Select, Tag } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import React from "react";
 import Loading from "../../../../components/Loading";
@@ -56,7 +43,7 @@ const UseForm: React.FC<UseFormPropsType> = ({
       style={{
         top: 20,
       }}
-      title="Create Task"
+      title="New Task"
       onCancel={onCancel}
       closable
       width={800}
@@ -75,7 +62,6 @@ const UseForm: React.FC<UseFormPropsType> = ({
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         style={{ width: "100%" }}
-        title="Create Task"
         form={form}
       >
         <Form.Item label="Project">
