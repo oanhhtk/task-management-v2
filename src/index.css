@@ -400,3 +400,7 @@ body {
 .task-draggable-item:hover {
   background: rgb(241, 241, 241) !important;
 }
+
+.login-tabs .ant-tabs-nav-wrap {
+  justify-content: center;
+}

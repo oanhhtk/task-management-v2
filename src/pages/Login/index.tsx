@@ -1,5 +1,20 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Typography, message } from "antd";
+import {
+  FacebookOutlined,
+  GoogleOutlined,
+  LockOutlined,
+  TwitterOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Space,
+  Tabs,
+  Typography,
+  message,
+} from "antd";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { Navigate, useNavigate } from "react-router-dom";
 import { graphQLRequest } from "../../utils/request";
@@ -44,75 +59,142 @@ export default function Login() {
     return <Navigate to="/" />;
   }
 
+  const items = [
+    {
+      key: "login-form",
+      label: `Login with Phone number`,
+      children: (
+        <>
+          <Typography.Title
+            style={{
+              textAlign: "center",
+              padding: "10px 0",
+            }}
+            className="text-center"
+          >
+            Task Management
+          </Typography.Title>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Form
+              name="normal_login"
+              className="login-form"
+              initialValues={{ remember: true }}
+              onFinish={handleLoginWithGoogle}
+            >
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your Username!" },
+                ]}
+              >
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username"
+                  value="oanh"
+                />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                  value="12345"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                  <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+
+                <a className="login-form-forgot" href="">
+                  Forgot password
+                </a>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                >
+                  Log in
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </>
+      ),
+    },
+    {
+      key: "social-login",
+      label: `Login with Social media`,
+      children: (
+        <div className="flex justify-center items-center">
+          <Space direction="vertical">
+            <Button
+              style={{
+                width: 300,
+              }}
+              icon={<GoogleOutlined />}
+              onClick={handleLoginWithGoogle}
+            >
+              Sign In with Google
+            </Button>
+            <Button
+              style={{
+                width: 300,
+              }}
+              icon={<FacebookOutlined />}
+            >
+              Sign In with Facebook
+            </Button>
+            <Button
+              style={{
+                width: 300,
+              }}
+              icon={<TwitterOutlined />}
+            >
+              Sign In with Twitter
+            </Button>
+          </Space>
+        </div>
+      ),
+    },
+  ];
+  const onChange = (key: string) => {
+    console.log(key);
+  };
+
   return (
-    <>
-      <Typography.Title
-        style={{
-          textAlign: "center",
-          padding: "10px 0",
-        }}
-        className="text-center"
-      >
-        Task Management
-      </Typography.Title>
+    <div
+      className="flex justify-center items-center"
+      style={{
+        width: "100%",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
+          minWidth: 700,
         }}
       >
-        <Form
-          name="normal_login"
-          className="login-form"
-          initialValues={{ remember: true }}
-          onFinish={handleLoginWithGoogle}
-          style={{
-            width: "20%",
-          }}
-        >
-          <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Please input your Username!" }]}
-          >
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
-              value="oanh"
-            />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "Please input your Password!" }]}
-          >
-            <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Password"
-              value="12345"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Log in
-            </Button>
-          </Form.Item>
-        </Form>
+        <Tabs
+          className="login-tabs"
+          defaultActiveKey="login-form"
+          items={items}
+          onChange={onChange}
+        />
       </div>
-    </>
+    </div>
   );
 }
