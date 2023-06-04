@@ -6,6 +6,7 @@ import { BoardContext } from "../../context/BoardContext";
 interface DraggableItemProps {
   item: TaskItemType;
   index: number;
+  draggableId: string;
   onClick: (item: TaskItemType) => void;
 }
 
@@ -13,12 +14,13 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   item,
   index,
   onClick,
+  draggableId,
 }) => {
   const { activeId, setActiveId } = useContext(BoardContext);
 
   if (!item) return <></>;
   return (
-    <Draggable key={item?.id} draggableId={item?._id} index={index}>
+    <Draggable key={item?.id} draggableId={draggableId} index={index}>
       {(provided, snapshot) => {
         return (
           <div
