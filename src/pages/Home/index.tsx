@@ -48,7 +48,6 @@ function Home({ currentMenu }: HomePropsType) {
   const [formSubmiting, setFormSubmiting] = useState(false);
   const [triggerReload, setTriggerReload] = useState(false);
   const params = useParams();
-  console.log("params :>> ", params);
 
   const columns: ColumnsType<BoardItemDataType> = [
     {
@@ -150,9 +149,7 @@ function Home({ currentMenu }: HomePropsType) {
   }, [triggerReload]);
 
   const onFromSubmit = async (value: any, boardId: string) => {
-    console.log(value);
     setFormSubmiting(true);
-    console.log(useFormTypeRef.current);
     try {
       if (useFormTypeRef.current === "CREATE") {
         await addBoard(value);
