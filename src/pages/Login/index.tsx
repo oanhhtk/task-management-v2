@@ -2,6 +2,7 @@ import {
   FacebookOutlined,
   GoogleOutlined,
   LockOutlined,
+  QqOutlined,
   TwitterOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -65,15 +66,6 @@ export default function Login() {
       label: `Login with Phone number`,
       children: (
         <>
-          <Typography.Title
-            style={{
-              textAlign: "center",
-              padding: "10px 0",
-            }}
-            className="text-center"
-          >
-            Task Management
-          </Typography.Title>
           <div
             style={{
               width: "100%",
@@ -188,6 +180,40 @@ export default function Login() {
           minWidth: 700,
         }}
       >
+        <Typography.Title
+          style={{
+            textAlign: "center",
+            padding: "10px 0",
+          }}
+          className="text-center"
+        >
+          <QqOutlined
+            style={{
+              background: "pink",
+              padding: 4,
+              borderRadius: 50,
+            }}
+          />{" "}
+          Task Management <br />
+          <Typography.Text
+            style={{
+              textAlign: "center",
+              fontWeight: "normal",
+            }}
+            className="text-center"
+          >
+            Welcome to{" "}
+            <span
+              style={{
+                color: "pink",
+              }}
+            >
+              oanhhtk
+            </span>{" "}
+            - Management System
+          </Typography.Text>
+        </Typography.Title>
+
         <Tabs
           className="login-tabs"
           defaultActiveKey="login-form"
