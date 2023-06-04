@@ -10,18 +10,17 @@ const DraggableList: React.FC<DraggableListProps> = ({ list, onItemClick }) => {
   return (
     <>
       {list?.length > 0 &&
-        list?.map((item, index) => {
-          return (
-            <DraggableItem
-              key={item?.id}
-              item={item?.content}
-              index={index}
-              onClick={() => {
-                onItemClick(item);
-              }}
-            />
-          );
-        })}
+        list?.map((item, index) => (
+          <DraggableItem
+            key={item?.id}
+            draggableId={item?.id}
+            item={item?.content}
+            index={index}
+            onClick={() => {
+              onItemClick(item);
+            }}
+          />
+        ))}
     </>
   );
 };

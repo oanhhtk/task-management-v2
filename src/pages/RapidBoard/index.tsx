@@ -1,9 +1,9 @@
-import { Form, Spin, Typography, notification } from "antd";
+import { Form, Spin, Typography, message, notification } from "antd";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useParams } from "react-router-dom";
 import DroppableColumns from "../../components/DroppableColumn";
-import { BoardsLoader, addTask } from "../../service";
+import { BoardsLoader, addTask, updateTask } from "../../service";
 import TaskDetail from "./components/TaskDetail";
 import UseForm from "./components/UseForm";
 import BoardProvier from "../../context/BoardContext";
@@ -15,7 +15,6 @@ function RapidBoard() {
   const { folderId } = useParams();
   const [columns, setColumns] =
     useState<Record<string, DroppableColumnsType>>();
-  const [form] = Form.useForm();
   const [projectName, setProjectName] = useState("");
 
   const [taskDetail, setTaskDetail] = useState<any>();
@@ -57,9 +56,9 @@ function RapidBoard() {
     getBoards();
   }, [folderId, triggerReload]);
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
-    const { source, destination } = result;
+    const { source, draggableId, destination } = result;
     const sourceColumn = columns?.[source.droppableId];
     const destColumn = columns?.[destination.droppableId];
     //
@@ -95,6 +94,16 @@ function RapidBoard() {
           items: sourceItems,
         },
       }));
+    }
+    //!! handle update api
+    try {
+      await updateTask(draggableId, {
+        status: destination.droppableId,
+      });
+      setTriggerReload((prev) => !prev);
+      message.success("Updated successfully!");
+    } catch (error) {
+      message.error("Error! Try again");
     }
   };
 
@@ -174,25 +183,6 @@ function RapidBoard() {
                           columnName={column.name}
                           handleAddNewToDo={() => {
                             setOpenUseForm(true);
-                            // setColumns(
-                            //   (prev) =>
-                            //     prev && {
-                            //       ...prev,
-                            //       ["TODO"]: {
-                            //         ...prev["TODO"],
-                            //         items: [
-                            //           {
-                            //             _id: `${column?.items.length + 1}`,
-                            //             id: `${column?.items.length + 1}`,
-                            //             name: "string",
-                            //             descriptions: "This is descriptions",
-                            //             status: "TODO",
-                            //           },
-                            //           ...prev["TODO"]?.items,
-                            //         ],
-                            //       },
-                            //     }
-                            // );
                           }}
                           onItemClick={(item) => {
                             setTaskDetail(item);
@@ -217,7 +207,6 @@ function RapidBoard() {
             open={openUseForm}
             onCancel={() => setOpenUseForm(false)}
             projectName={projectName}
-            form={form}
             onSubmit={onFromSubmit}
             formProps={{
               isSubmiting: formSubmiting,

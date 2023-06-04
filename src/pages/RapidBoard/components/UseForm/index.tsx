@@ -13,7 +13,6 @@ type UseFormPropsType = {
   onCancel: () => void;
   onSubmit: (value: any) => Promise<any>;
   projectName: string;
-  form: FormInstance;
   formProps: {
     isSubmiting: boolean;
   };
@@ -33,10 +32,16 @@ const UseForm: React.FC<UseFormPropsType> = ({
   onCancel,
   onSubmit,
   projectName = "",
-  form,
   formProps,
 }) => {
   const { isSubmiting } = formProps;
+  const [form] = Form.useForm();
+
+  const handleCancel = () => {
+    form.resetFields();
+    onCancel();
+  };
+
   return (
     <Modal
       open={open}
@@ -44,7 +49,7 @@ const UseForm: React.FC<UseFormPropsType> = ({
         top: 20,
       }}
       title="New Task"
-      onCancel={onCancel}
+      onCancel={handleCancel}
       closable
       width={800}
       // footer={null}
@@ -84,13 +89,14 @@ const UseForm: React.FC<UseFormPropsType> = ({
             <Select
               placeholder="Select issue type"
               value="task"
-              options={ISSUE_TYPES_OPTIONS.map((item) => ({
+              options={ISSUE_TYPES_OPTIONS.map((item, i) => ({
                 ...item,
                 label: (
                   <Tag
                     color={item.color}
                     className="flex justify-center items-center create-form-tag"
                     bordered={false}
+                    key={i}
                   >
                     {item.label}
                   </Tag>
@@ -110,13 +116,14 @@ const UseForm: React.FC<UseFormPropsType> = ({
           >
             <Select
               placeholder="Select priority"
-              options={PRIORITY_OPTIONS.map((item) => ({
+              options={PRIORITY_OPTIONS.map((item, i) => ({
                 ...item,
                 label: (
                   <Tag
                     className="flex justify-center items-center create-form-tag"
                     color={item.color}
                     bordered={false}
+                    key={i}
                   >
                     {item.label}
                   </Tag>

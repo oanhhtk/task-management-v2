@@ -1,12 +1,14 @@
 import { Form, Input, Modal, Select, Tag, Typography } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import Loading from "../../../../components/Loading";
 import { BOARD_TYPE } from "../../../../utils/constant";
 
 type UseFormPropsType = {
   open: boolean;
+  type: UseFormActionType;
+  record: BoardItemDataType | undefined;
   onCancel: () => void;
-  onSubmit: (value: any) => Promise<any>;
+  onSubmit: (value: any, id: string) => Promise<any>;
   formProps: {
     isSubmiting: boolean;
   };
@@ -19,9 +21,22 @@ const UseForm: React.FC<UseFormPropsType> = ({
   onCancel,
   onSubmit,
   formProps,
+  type,
+  record,
 }) => {
   const { isSubmiting } = formProps;
   const [form] = Form.useForm();
+
+  const handleCancel = () => {
+    form.resetFields();
+    onCancel();
+  };
+
+  useEffect(() => {
+    if (type === "CREATE" || !record) return;
+    //!initvalue
+    form.setFieldsValue(record);
+  }, [open, type, record]);
 
   return (
     <Modal
@@ -30,14 +45,14 @@ const UseForm: React.FC<UseFormPropsType> = ({
         top: 20,
       }}
       title={<Typography.Title level={3}>New Board</Typography.Title>}
-      onCancel={onCancel}
+      onCancel={handleCancel}
       closable
       width={800}
       // footer={null}
       okText="Submit"
       onOk={() => {
         const formValues = form.getFieldsValue();
-        onSubmit(formValues);
+        onSubmit(formValues, record?.id);
       }}
       okButtonProps={{
         disabled: isSubmiting,
@@ -61,13 +76,14 @@ const UseForm: React.FC<UseFormPropsType> = ({
             }}
             placeholder="Select board type"
             defaultValue="scrum"
-            options={BOARD_TYPE.map((item) => ({
+            options={BOARD_TYPE.map((item, i) => ({
               ...item,
               label: (
                 <Tag
                   className="flex justify-center items-center create-form-tag"
                   color={item.color}
                   bordered={false}
+                  key={i}
                 >
                   {item.label}
                 </Tag>

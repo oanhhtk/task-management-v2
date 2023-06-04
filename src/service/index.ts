@@ -23,7 +23,11 @@ export const getBoardList = async () => {
       author {
         uid
         name
+        email
       }
+      administrators
+      board_type
+      descriptions
     }
   }`;
 
@@ -117,6 +121,31 @@ export const BoardsLoader = async (folderId: string) => {
   return data;
 };
 
+export const updateTask = async (updateTaskId: string, content: any) => {
+  const query = `mutation Mutation($updateTaskId: String!, $content: TaskContentInput) {
+    updateTask(id: $updateTaskId, content: $content) {
+      id
+      content {
+        _id
+        name
+        descriptions
+        status
+        issue_type
+        priority
+      }
+      createdAt
+      updatedAt
+    }
+  }`;
+
+  const variables = {
+    updateTaskId,
+    content,
+  };
+  const data = await graphQLRequest({ query, variables });
+  return data;
+};
+
 export const addTask = async (folderId: string, content: any) => {
   const query = `mutation Mutation($folderId: ID!, $content: TaskContentInput) {
     addTask(folderId: $folderId, content: $content) {
@@ -157,6 +186,47 @@ export const addBoard = async (content: any) => {
 
   const variables = {
     ...content,
+  };
+  const data = await graphQLRequest({ query, variables });
+  return data;
+  1;
+};
+
+export const deleteBoard = async (id: any) => {
+  const query = `mutation DeleteBoard($id: String!) {
+    deleteBoard(id: $id) {
+      id
+      name
+      createdAt
+      administrators
+      board_type
+      descriptions
+    }
+  }`;
+
+  const variables = {
+    id,
+  };
+  const data = await graphQLRequest({ query, variables });
+  return data;
+  1;
+};
+export const updateBoard = async (updateBoardId: any, content: any) => {
+  const query = `mutation Mutation($updateBoardId: String!, $content: BoardInput) {
+    updateBoard(id: $updateBoardId, content: $content) {
+      id
+      name
+      board_type
+      administrators
+      descriptions
+      createdAt
+      updatedAt
+    }
+  }`;
+
+  const variables = {
+    updateBoardId,
+    content,
   };
   const data = await graphQLRequest({ query, variables });
   return data;

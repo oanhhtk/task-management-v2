@@ -12,3 +12,13 @@ type DroppableColumnsType = {
   name: string;
   items: TaskItemType[];
 };
+
+type UseFormActionType = "CREATE" | "UPDATE";
+
+type BoardItemDataType = {
+  id: any;
+  name: string;
+  board_type: string;
+  administrators: string;
+  createdAt: string;
+};

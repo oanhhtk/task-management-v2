@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Badge, Button, Space, Typography } from "antd";
+import { Badge, Button, Space, Tooltip, Typography } from "antd";
 import { Droppable } from "react-beautiful-dnd";
 import DraggableList from "../DraggableList";
 import { COLUMS_TASK_LIST_ENUM } from "../../utils/constant";
@@ -55,22 +55,24 @@ export default function DroppableColumns({
         <div className="w-full h-full">
           <div className="h-full">
             {columnKey === "TODO" ? (
-              <Button
-                onClick={() => {
-                  handleAddNewToDo();
-                }}
-                icon={<PlusOutlined />}
-                style={{
-                  padding: 16,
-                  margin: "0 0 8px 0",
-                  minHeight: "50px",
-                  backgroundColor: "#fff",
-                  color: "#000",
-                  borderRadius: 7,
-                  border: "1px solid #ddd",
-                  width: "100%",
-                }}
-              />
+              <Tooltip title="Add new task">
+                <Button
+                  onClick={() => {
+                    handleAddNewToDo();
+                  }}
+                  icon={<PlusOutlined />}
+                  style={{
+                    padding: 16,
+                    margin: "0 0 8px 0",
+                    minHeight: "50px",
+                    backgroundColor: "#fff",
+                    color: "#000",
+                    borderRadius: 7,
+                    border: "1px solid #ddd",
+                    width: "100%",
+                  }}
+                />
+              </Tooltip>
             ) : (
               ""
             )}
@@ -84,7 +86,9 @@ export default function DroppableColumns({
                     ref={provided.innerRef}
                     style={{
                       background: snapshot.isDraggingOver ? "#ddd" : "#f1f1f1",
-                      border: !snapshot.isDraggingOver ? "" : "1px dashed blue",
+                      border: !snapshot.isDraggingOver
+                        ? "0px dashed #91caff"
+                        : "1px dashed #91caff",
                       padding: 4,
                       width: "100%",
                       minHeight: "1000px",
