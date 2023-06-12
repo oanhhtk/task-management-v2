@@ -67,7 +67,6 @@ function Home({ currentMenu }: HomePropsType) {
         <a onClick={() => navigate(`/rapid-board/${record?.id}`)}>{text}</a>
       ),
     },
-
     {
       title: "Board type",
       key: "board_type",
@@ -77,6 +76,12 @@ function Home({ currentMenu }: HomePropsType) {
           {dom?.toUpperCase()}
         </Tag>
       ),
+    },
+    {
+      title: "Administrators",
+      key: "administrators",
+      dataIndex: "administrators",
+      render: (dom) => <Tag color="magenta">{dom}</Tag>,
     },
     {
       title: "Descriptions",
