@@ -98,7 +98,6 @@ export default function Login() {
         </div>
       ),
     },
-    ,
     {
       key: "login-form",
       label: `Login with Phone number`,
@@ -167,6 +166,7 @@ export default function Login() {
       ),
     },
   ];
+
   const onChange = (key: string) => {
     console.log(key);
   };
