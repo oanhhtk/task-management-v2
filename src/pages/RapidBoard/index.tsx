@@ -23,7 +23,7 @@ function RapidBoard() {
   const [triggerReload, setTriggerReload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [useFormType, setUseFormType] = useState<UseFormActionType>("CREATE");
-  const [selectedRecord, setSelectedRecord] = useState<TaskItemType>();
+  const [selectedRecord, setSelectedRecord] = useState<any>();
 
   const getBoards = async () => {
     if (!folderId) return;
