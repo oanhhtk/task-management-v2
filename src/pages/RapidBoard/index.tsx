@@ -114,12 +114,25 @@ function RapidBoard() {
     if (!folderId) return;
     try {
       setFormSubmiting(true);
-      await addTask(folderId, value);
-      notification.success({
-        type: "success",
-        message: "Successfully",
-        description: "Add new task successfully",
-      });
+
+      if (useFormType === "CREATE") {
+        await addTask(folderId, value);
+        notification.success({
+          type: "success",
+          message: "Successfully",
+          description: "Add new task successfully",
+        });
+      } else {
+        try {
+          console.log("value :>> ", selectedRecord);
+          await updateTask(selectedRecord?.id, value);
+          setTriggerReload((prev) => !prev);
+          message.success("Updated successfully!");
+        } catch (error) {
+          message.error("Error! Try again");
+        }
+      }
+
       setTriggerReload(true);
     } catch (error) {
       notification.error({
