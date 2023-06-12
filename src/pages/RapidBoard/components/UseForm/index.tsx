@@ -11,10 +11,12 @@ import {
 type UseFormPropsType = {
   open: boolean;
   type: UseFormActionType;
-  record: {
-    content: TaskItemType | undefined;
-    id: string;
-  };
+  record:
+    | {
+        content: TaskItemType | undefined;
+        id: string;
+      }
+    | undefined;
   onCancel: () => void;
   onSubmit: (value: any) => Promise<any>;
   projectName: string;
