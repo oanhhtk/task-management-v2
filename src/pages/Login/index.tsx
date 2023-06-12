@@ -62,6 +62,43 @@ export default function Login() {
 
   const items = [
     {
+      key: "social-login",
+      label: `Login with Social media`,
+      children: (
+        <div className="flex justify-center items-center">
+          <Space direction="vertical">
+            <Button
+              style={{
+                width: 300,
+              }}
+              icon={<GoogleOutlined />}
+              onClick={handleLoginWithGoogle}
+            >
+              Sign In with Google
+            </Button>
+            <Button
+              style={{
+                width: 300,
+              }}
+              disabled
+              icon={<FacebookOutlined />}
+            >
+              Sign In with Facebook
+            </Button>
+            <Button
+              style={{
+                width: 300,
+              }}
+              disabled
+              icon={<TwitterOutlined />}
+            >
+              Sign In with Twitter
+            </Button>
+          </Space>
+        </div>
+      ),
+    },
+    {
       key: "login-form",
       label: `Login with Phone number`,
       children: (
@@ -128,42 +165,8 @@ export default function Login() {
         </>
       ),
     },
-    {
-      key: "social-login",
-      label: `Login with Social media`,
-      children: (
-        <div className="flex justify-center items-center">
-          <Space direction="vertical">
-            <Button
-              style={{
-                width: 300,
-              }}
-              icon={<GoogleOutlined />}
-              onClick={handleLoginWithGoogle}
-            >
-              Sign In with Google
-            </Button>
-            <Button
-              style={{
-                width: 300,
-              }}
-              icon={<FacebookOutlined />}
-            >
-              Sign In with Facebook
-            </Button>
-            <Button
-              style={{
-                width: 300,
-              }}
-              icon={<TwitterOutlined />}
-            >
-              Sign In with Twitter
-            </Button>
-          </Space>
-        </div>
-      ),
-    },
   ];
+
   const onChange = (key: string) => {
     console.log(key);
   };
@@ -216,7 +219,7 @@ export default function Login() {
 
         <Tabs
           className="login-tabs"
-          defaultActiveKey="login-form"
+          defaultActiveKey="social-login"
           items={items}
           onChange={onChange}
         />

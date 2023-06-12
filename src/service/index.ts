@@ -122,9 +122,10 @@ export const BoardsLoader = async (folderId: string) => {
 };
 
 export const updateTask = async (updateTaskId: string, content: any) => {
-  const query = `mutation Mutation($updateTaskId: String!, $content: TaskContentInput) {
+  const query = `mutation Mutation($updateTaskId: String, $content: TaskContentInput) {
     updateTask(id: $updateTaskId, content: $content) {
-      id
+      updatedAt
+      createdAt
       content {
         _id
         name
@@ -133,8 +134,7 @@ export const updateTask = async (updateTaskId: string, content: any) => {
         issue_type
         priority
       }
-      createdAt
-      updatedAt
+      id
     }
   }`;
 

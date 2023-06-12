@@ -5,6 +5,7 @@ import { BOARD_TYPE } from "../../../../utils/constant";
 
 type UseFormPropsType = {
   open: boolean;
+  title: string;
   type: UseFormActionType;
   record: BoardItemDataType | undefined;
   onCancel: () => void;
@@ -23,6 +24,7 @@ const UseForm: React.FC<UseFormPropsType> = ({
   formProps,
   type,
   record,
+  title,
 }) => {
   const { isSubmiting } = formProps;
   const [form] = Form.useForm();
@@ -44,7 +46,11 @@ const UseForm: React.FC<UseFormPropsType> = ({
       style={{
         top: 20,
       }}
-      title={<Typography.Title level={3}>New Board</Typography.Title>}
+      title={
+        <Typography.Title level={3}>
+          {type === "CREATE" ? "New Board" : ""} {title}
+        </Typography.Title>
+      }
       onCancel={handleCancel}
       closable
       width={800}

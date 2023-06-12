@@ -13,13 +13,14 @@ type TaskDetailType = {
     createdAt: string;
     content: TaskItemType;
   };
+  openEditForm: () => void;
 };
 
 const panelStyle = {
   marginBottom: 24,
   border: "none",
 };
-const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
+const TaskDetail: React.FC<TaskDetailType> = ({ data, openEditForm }) => {
   if (!data) return <></>;
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +63,11 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data }) => {
               header="Description"
               key="Description"
               style={panelStyle}
-              extra={<Button type="primary">Edit</Button>}
+              extra={
+                <Button type="primary" onClick={openEditForm}>
+                  Edit
+                </Button>
+              }
             >
               <Descriptions bordered size={"default"} column={1}>
                 <Descriptions.Item label="Name" className="font-bold">

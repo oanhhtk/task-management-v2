@@ -41,7 +41,7 @@ type HomePropsType = {
 function Home({ currentMenu }: HomePropsType) {
   const navigate = useNavigate();
   const [boardList, setBoarList] = useState<any>();
-  const useFormTypeRef = useRef<UseFormActionType>("CREATE");
+  const [useFormType, setUseFormType] = useState<UseFormActionType>("CREATE");
 
   const [selectedBoard, setSelectedBoard] = useState<BoardItemDataType>();
   const [openUseForm, setOpenUseForm] = useState(false);
@@ -67,7 +67,6 @@ function Home({ currentMenu }: HomePropsType) {
         <a onClick={() => navigate(`/rapid-board/${record?.id}`)}>{text}</a>
       ),
     },
-
     {
       title: "Board type",
       key: "board_type",
@@ -77,6 +76,12 @@ function Home({ currentMenu }: HomePropsType) {
           {dom?.toUpperCase()}
         </Tag>
       ),
+    },
+    {
+      title: "Administrators",
+      key: "administrators",
+      dataIndex: "administrators",
+      render: (dom) => <Tag color="magenta">{dom}</Tag>,
     },
     {
       title: "Descriptions",
@@ -104,7 +109,7 @@ function Home({ currentMenu }: HomePropsType) {
               onClick={(e) => {
                 e.preventDefault();
                 setOpenUseForm(true);
-                useFormTypeRef.current = "UPDATE";
+                setUseFormType("UPDATE");
                 setSelectedBoard(record);
               }}
               icon={<EditTwoTone />}
@@ -151,7 +156,7 @@ function Home({ currentMenu }: HomePropsType) {
   const onFromSubmit = async (value: any, boardId: string) => {
     setFormSubmiting(true);
     try {
-      if (useFormTypeRef.current === "CREATE") {
+      if (useFormType === "CREATE") {
         await addBoard(value);
         message.success("Added new Board successfully!");
       } else {
@@ -188,7 +193,7 @@ function Home({ currentMenu }: HomePropsType) {
               type="primary"
               onClick={() => {
                 setOpenUseForm(true);
-                useFormTypeRef.current = "CREATE";
+                setUseFormType("CREATE");
               }}
             >
               New board
@@ -213,13 +218,14 @@ function Home({ currentMenu }: HomePropsType) {
       {openUseForm ? (
         <UseForm
           open={openUseForm}
-          type={useFormTypeRef.current}
+          type={useFormType}
           record={selectedBoard}
           onCancel={() => setOpenUseForm(false)}
           onSubmit={onFromSubmit}
           formProps={{
             isSubmiting: formSubmiting,
           }}
+          title={useFormType === "CREATE" ? "New board" : "Update Board"}
         />
       ) : null}
     </div>

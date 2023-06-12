@@ -22,6 +22,8 @@ function RapidBoard() {
   const [formSubmiting, setFormSubmiting] = useState(false);
   const [triggerReload, setTriggerReload] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [useFormType, setUseFormType] = useState<UseFormActionType>("CREATE");
+  const [selectedRecord, setSelectedRecord] = useState<any>();
 
   const getBoards = async () => {
     if (!folderId) return;
@@ -112,17 +114,30 @@ function RapidBoard() {
     if (!folderId) return;
     try {
       setFormSubmiting(true);
-      await addTask(folderId, value);
-      notification.success({
-        type: "success",
-        message: "Successfully",
-        description: "Add new task successfully",
-      });
+
+      if (useFormType === "CREATE") {
+        await addTask(folderId, value);
+        notification.success({
+          type: "success",
+          message: "Successfully",
+          description: "Add new task successfully",
+        });
+      } else {
+        try {
+          console.log("value :>> ", selectedRecord);
+          await updateTask(selectedRecord?.id, value);
+          setTriggerReload((prev) => !prev);
+          message.success("Updated successfully!");
+        } catch (error) {
+          message.error("Error! Try again");
+        }
+      }
+
       setTriggerReload(true);
     } catch (error) {
-      notification.success({
+      notification.error({
         type: "error",
-        message: "Failed to add new task",
+        message: "Failed to add new task!!",
         description: "Add new task failed!. Try again",
       });
     } finally {
@@ -182,7 +197,9 @@ function RapidBoard() {
                           columnData={column}
                           columnName={column.name}
                           handleAddNewToDo={() => {
+                            setUseFormType("CREATE");
                             setOpenUseForm(true);
+                            setSelectedRecord(undefined);
                           }}
                           onItemClick={(item) => {
                             setTaskDetail(item);
@@ -198,19 +215,30 @@ function RapidBoard() {
             </div>
           </div>
           <div>
-            <TaskDetail data={taskDetail} />
+            <TaskDetail
+              data={taskDetail}
+              openEditForm={() => {
+                setUseFormType("UPDATE");
+                setOpenUseForm(true);
+                setSelectedRecord(taskDetail);
+              }}
+              // type="UPDATE"
+            />
           </div>
         </div>
 
         {openUseForm ? (
           <UseForm
+            title={useFormType === "CREATE" ? "New Task" : "Update task"}
             open={openUseForm}
             onCancel={() => setOpenUseForm(false)}
             projectName={projectName}
             onSubmit={onFromSubmit}
+            record={selectedRecord}
             formProps={{
               isSubmiting: formSubmiting,
             }}
+            type={useFormType}
           />
         ) : null}
       </div>
