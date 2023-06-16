@@ -20,6 +20,7 @@ const panelStyle = {
   marginBottom: 24,
   border: "none",
 };
+
 const TaskDetail: React.FC<TaskDetailType> = ({ data, openEditForm }) => {
   if (!data) return <></>;
   const [loading, setLoading] = useState(false);
@@ -38,11 +39,12 @@ const TaskDetail: React.FC<TaskDetailType> = ({ data, openEditForm }) => {
         height: "100%",
         maxHeight: "100vh",
         overflow: "scroll",
+        zIndex: 100,
       }}
     >
       <div
         style={{
-          width: "600px",
+          width: "100%",
           position: "relative",
         }}
       >

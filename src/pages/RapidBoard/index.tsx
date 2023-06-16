@@ -1,13 +1,14 @@
-import { Form, Spin, Typography, message, notification } from "antd";
+import { Typography, message, notification } from "antd";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useParams } from "react-router-dom";
 import DroppableColumns from "../../components/DroppableColumn";
+import Loading from "../../components/Loading";
+import BoardProvier from "../../context/BoardContext";
 import { BoardsLoader, addTask, updateTask } from "../../service";
 import TaskDetail from "./components/TaskDetail";
 import UseForm from "./components/UseForm";
-import BoardProvier from "../../context/BoardContext";
-import Loading from "../../components/Loading";
+import SplitPane from "react-split-pane";
 
 const orderSortArr = ["TODO", "INPROGRESS", "RESOLVED", "DONE", "RELEASED"];
 
@@ -150,71 +151,88 @@ function RapidBoard() {
     <BoardProvier>
       <div
         style={{
-          maxHeight: "100vh",
-          padding: "10px",
-          overflow: "hidden",
+          width: "100%",
+          height: "100vh",
+          position: "relative",
         }}
       >
-        <Typography.Text
-          className="text-center logo"
-          style={{
-            marginTop: "30px",
-          }}
-        >
-          {projectName}
-        </Typography.Text>
-        <div className="flex">
-          <Loading loading={loading} />
-
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              overflow: "scroll",
-            }}
+        {/* @ts-ignore */}
+        <SplitPane split="horizontal" allowResize={false} defaultSize={"100vh"}>
+          {/* @ts-ignore */}
+          <SplitPane
+            split="vertical"
+            minSize={400}
+            maxSize={-100}
+            defaultSize={!!taskDetail ? "50%" : "100%"}
+            allowResize
           >
             <div
               style={{
                 maxHeight: "100vh",
-                minHeight: "100vh",
-                overflow: "scroll",
               }}
             >
-              <div
-                className="flex h-full"
+              <Typography.Text
+                className="text-center logo"
                 style={{
-                  width: "1240px",
-                  minWidth: "100%",
+                  marginTop: "30px",
                 }}
               >
-                {columns ? (
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    {Object.entries(columns).map(([columnKey, column]) => {
-                      return (
-                        <DroppableColumns
-                          key={columnKey}
-                          columnKey={columnKey}
-                          columnData={column}
-                          columnName={column.name}
-                          handleAddNewToDo={() => {
-                            setUseFormType("CREATE");
-                            setOpenUseForm(true);
-                            setSelectedRecord(undefined);
-                          }}
-                          onItemClick={(item) => {
-                            setTaskDetail(item);
-                          }}
-                        />
-                      );
-                    })}
-                  </DragDropContext>
-                ) : (
-                  <Loading loading />
-                )}
+                {projectName}
+              </Typography.Text>
+              <div className="flex">
+                <Loading loading={loading} />
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    overflow: "scroll",
+                  }}
+                >
+                  <div
+                    style={{
+                      maxHeight: "100vh",
+                      minHeight: "100vh",
+                      overflow: "scroll",
+                    }}
+                  >
+                    <div
+                      className="flex h-full"
+                      style={{
+                        width: "1240px",
+                        minWidth: "100%",
+                      }}
+                    >
+                      {columns ? (
+                        <DragDropContext onDragEnd={onDragEnd}>
+                          {Object.entries(columns).map(
+                            ([columnKey, column]) => {
+                              return (
+                                <DroppableColumns
+                                  key={columnKey}
+                                  columnKey={columnKey}
+                                  columnData={column}
+                                  columnName={column.name}
+                                  handleAddNewToDo={() => {
+                                    setUseFormType("CREATE");
+                                    setOpenUseForm(true);
+                                    setSelectedRecord(undefined);
+                                  }}
+                                  onItemClick={(item) => {
+                                    setTaskDetail(item);
+                                  }}
+                                />
+                              );
+                            }
+                          )}
+                        </DragDropContext>
+                      ) : (
+                        <Loading loading />
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
             <TaskDetail
               data={taskDetail}
               openEditForm={() => {
@@ -222,26 +240,25 @@ function RapidBoard() {
                 setOpenUseForm(true);
                 setSelectedRecord(taskDetail);
               }}
-              // type="UPDATE"
             />
-          </div>
-        </div>
-
-        {openUseForm ? (
-          <UseForm
-            title={useFormType === "CREATE" ? "New Task" : "Update task"}
-            open={openUseForm}
-            onCancel={() => setOpenUseForm(false)}
-            projectName={projectName}
-            onSubmit={onFromSubmit}
-            record={selectedRecord}
-            formProps={{
-              isSubmiting: formSubmiting,
-            }}
-            type={useFormType}
-          />
-        ) : null}
+          </SplitPane>
+        </SplitPane>
       </div>
+
+      {openUseForm ? (
+        <UseForm
+          title={useFormType === "CREATE" ? "New Task" : "Update task"}
+          open={openUseForm}
+          onCancel={() => setOpenUseForm(false)}
+          projectName={projectName}
+          onSubmit={onFromSubmit}
+          record={selectedRecord}
+          formProps={{
+            isSubmiting: formSubmiting,
+          }}
+          type={useFormType}
+        />
+      ) : null}
     </BoardProvier>
   );
 }
