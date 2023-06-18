@@ -235,7 +235,8 @@ function RapidBoard() {
             </div>
             <TaskDetail
               data={taskDetail}
-              openEditForm={() => {
+              openEditForm={(e: any) => {
+                e.stopPropagation();
                 setUseFormType("UPDATE");
                 setOpenUseForm(true);
                 setSelectedRecord(taskDetail);
