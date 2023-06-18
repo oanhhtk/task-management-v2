@@ -13,7 +13,7 @@ type TaskDetailType = {
     createdAt: string;
     content: TaskItemType;
   };
-  openEditForm: () => void;
+  openEditForm: (e: any) => void;
 };
 
 const panelStyle = {
